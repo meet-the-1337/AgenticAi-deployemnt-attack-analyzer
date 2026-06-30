@@ -115,12 +115,17 @@ class LoggingConfig(BaseModel):
     level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
     format: str = "%(asctime)s [%(levelname)s] %(name)s — %(message)s"
 
+class DefenseConfig(BaseModel):
+    active: str = "none"
+    blocking: bool = False
+
 
 class Config(BaseModel):
     """Top-level Config object — the only thing the rest of the codebase imports."""
 
     database: DatabaseConfig
     llm: LLMConfig
+    defense: DefenseConfig
     logging: LoggingConfig
 
     @model_validator(mode="after")

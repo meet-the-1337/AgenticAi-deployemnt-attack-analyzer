@@ -21,11 +21,16 @@ CREATE TABLE IF NOT EXISTS runs (
     topology_type           TEXT    NOT NULL,             -- e.g. "linear", "star", "mesh"
     defense_config          TEXT,                         -- JSON blob: which defenses active + params
     injection_type          TEXT,                         -- e.g. "direct", "indirect", "none"
+    attack_objective        TEXT,                         -- M7: e.g. "unauthorized_action"
+    attack_strength         TEXT,                         -- M7: "blatant", "moderate", "subtle"
+    expected_signal         TEXT,                         -- M7: JSON dict of the expected attack signal
     entry_agent_id          TEXT,                         -- agent_id where attack enters
     critical_asset_agent_id TEXT,                         -- agent_id of target asset
     total_hops              INTEGER,                      -- total edges in topology
     hops_to_compromise      INTEGER,                      -- hops taken until compromise (NULL if not compromised)
     final_outcome           TEXT,                         -- "compromised" | "blocked" | "detected" | "timeout"
+    injection_outcome       TEXT,                         -- M7: "ignored", "partial", "full_success"
+    judge_confidence        REAL,                         -- M7: optional confidence if LLM judge used
     detecting_defense       TEXT,                         -- which defense triggered detection (NULL if none)
     run_started_at          TEXT    NOT NULL,             -- ISO-8601 UTC
     run_ended_at            TEXT,                         -- ISO-8601 UTC; NULL if still running
@@ -50,9 +55,10 @@ CREATE TABLE IF NOT EXISTS events (
     memory_ops_summary          TEXT,                     -- human-readable summary of memory reads/writes
     model_name                  TEXT    NOT NULL,         -- e.g. "gpt-4o-mini", "llama3"
     latency_ms                  REAL,                     -- wall-clock LLM call latency in milliseconds
-    defense_active              INTEGER NOT NULL DEFAULT 0,  -- 1 if any defense was active this event
-    defense_triggered           INTEGER NOT NULL DEFAULT 0,  -- 1 if defense fired/blocked this event
-    injection_present_this_event INTEGER NOT NULL DEFAULT 0, -- 1 if injected payload was in prompt
+    defense_active              INTEGER NOT NULL,             -- boolean 1/0
+    defense_triggered           INTEGER NOT NULL,             -- boolean 1/0
+    defense_confidence_score    REAL,                         -- M8: optional confidence score from defense
+    injection_present_this_event INTEGER NOT NULL,             -- boolean 1/0 if injected payload was in prompt
     injection_outcome           TEXT,                     -- "propagated" | "blocked" | "ignored" | NULL
     -- M3 additions: LLM call metadata (NULL for stub/non-LLM events)
     temperature                 REAL,                     -- sampling temperature used for this event

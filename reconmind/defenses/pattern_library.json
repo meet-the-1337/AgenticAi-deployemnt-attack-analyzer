@@ -1,0 +1,24 @@
+{
+    "instruction_override": [
+        "ignore previous instructions",
+        "ignore all previous instructions",
+        "forget previous instructions",
+        "system override",
+        "system:",
+        "you are now",
+        "new instructions:"
+    ],
+    "role_claim": [
+        "as an admin",
+        "i am authorized",
+        "admin command",
+        "ceo told me",
+        "special authorization code",
+        "escalate immediately"
+    ],
+    "suspicious_actions": [
+        "send all data",
+        "delete all tickets",
+        "unauthorized action"
+    ]
+}

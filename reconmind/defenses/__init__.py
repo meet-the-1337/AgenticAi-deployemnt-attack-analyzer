@@ -1,6 +1,14 @@
 """
 reconmind.defenses
 ==================
-Defense modules: input sanitization, output filtering, memory guards.
-Populated in Milestone 5.
+Defense mechanisms.
 """
+
+from reconmind.defenses.base import DefenseResult, Defense
+from reconmind.defenses.heuristic import HeuristicDefense
+
+__all__ = [
+    "DefenseResult",
+    "Defense",
+    "HeuristicDefense"
+]

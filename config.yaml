@@ -26,6 +26,10 @@ llm:
       model: "qwen3:8b"
       temperature: 0.0      # deterministic: judge verdicts must be reproducible
 
+defense:
+  active: "heuristic"       # "heuristic", "judge", or "none"
+  blocking: false           # if true, block input on trigger. if false, log only
+
 logging:
   level: "INFO"             # DEBUG | INFO | WARNING | ERROR
   format: "%(asctime)s [%(levelname)s] %(name)s — %(message)s"

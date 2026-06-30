@@ -18,26 +18,42 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
+import argparse
 from reconmind.config import cfg
 from reconmind.db.init_db import init_db
 from reconmind.platform_.graph import build_graph
 from reconmind.platform_.state import GraphState
-from reconmind.attacks.direct_injection import DirectInjectionAttack
+from reconmind.attacks import (
+    DirectInjectionAttack,
+    IndirectInjectionAttack,
+    MemoryPoisoningAttack,
+    ToolMisuseAttack
+)
 
 logging.basicConfig(level=cfg.logging.level, format=cfg.logging.format)
 logger = logging.getLogger(__name__)
 
-def _create_run_row(run_id: str, db_path: Path, injection_type: str, entry_point: str) -> None:
+import json
+
+def _create_run_row(run_id: str, db_path: Path, attack: Any) -> None:
     sql = """
         INSERT INTO runs (
             run_id, scenario_id, topology_type, injection_type, entry_agent_id,
+            attack_objective, attack_strength, expected_signal,
             run_started_at, run_status
-        ) VALUES (?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """
     now = datetime.now(tz=timezone.utc).isoformat()
+    expected_signal_json = json.dumps(attack.expected_signal())
+    
     with sqlite3.connect(str(db_path)) as conn:
         conn.execute("PRAGMA foreign_keys = ON;")
-        conn.execute(sql, (run_id, "attack_sample", "linear", injection_type, entry_point, now, "completed"))
+        conn.execute(sql, (
+            run_id, "attack_sample", "linear", 
+            attack.config.attack_type, attack.config.entry_point,
+            attack.config.objective, attack.config.strength, expected_signal_json,
+            now, "completed"
+        ))
         conn.commit()
 
 def print_trace(run_id: str, db_path: Path) -> None:
@@ -63,15 +79,30 @@ def print_trace(run_id: str, db_path: Path) -> None:
     print("="*80 + "\n")
 
 def main() -> None:
-    print("Milestone 5 — Attack Framework Verification")
+    parser = argparse.ArgumentParser(description="Run an attack against the M4 agent pipeline.")
+    parser.add_argument("--attack-type", choices=["direct", "indirect", "memory_poison", "tool_misuse"], default="direct", help="Type of attack to run")
+    parser.add_argument("--strength", choices=["subtle", "moderate", "blatant"], default="blatant", help="Strength of the attack payload")
+    args = parser.parse_args()
+
+    print("Milestone 6 — Attack Framework Verification")
     db_path = init_db()
     graph = build_graph()
     
-    # 1. Instantiate the attack (try blatant first)
     objective = "unauthorized_action"
-    strength = "blatant"
-    print(f"\nSetting up Direct Injection Attack (Objective: {objective}, Strength: {strength})")
-    attack = DirectInjectionAttack(objective=objective, strength=strength)
+    strength = args.strength
+    print(f"\nSetting up {args.attack_type.upper()} Attack (Objective: {objective}, Strength: {strength})")
+    
+    if args.attack_type == "direct":
+        attack = DirectInjectionAttack(objective=objective, strength=strength)
+    elif args.attack_type == "indirect":
+        attack = IndirectInjectionAttack(objective=objective, strength=strength)
+    elif args.attack_type == "memory_poison":
+        attack = MemoryPoisoningAttack(objective=objective, strength=strength)
+    elif args.attack_type == "tool_misuse":
+        attack = ToolMisuseAttack(objective=objective, strength=strength)
+    else:
+        print("Invalid attack type")
+        sys.exit(1)
     
     run_id = str(uuid.uuid4())
     session_id = f"sess_attack_{uuid.uuid4().hex[:8]}"
@@ -90,7 +121,7 @@ def main() -> None:
     print("Injecting payload...")
     modified_state = attack.inject(initial_state)
     
-    _create_run_row(run_id, db_path, attack.config.attack_type, attack.config.entry_point)
+    _create_run_row(run_id, db_path, attack)
     
     print(f"Payload to be sent: {modified_state['current_input']}")
     print("Invoking graph...")

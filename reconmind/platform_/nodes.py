@@ -22,8 +22,15 @@ from reconmind.platform_.prompts import (
 )
 from reconmind.platform_.state import GraphState
 from reconmind.platform_.tools import TOOL_REGISTRY
+from reconmind.config import cfg
+from reconmind.defenses.heuristic import HeuristicDefense
 
 logger = logging.getLogger(__name__)
+
+# Initialize defense if active
+active_defense = None
+if cfg.defense.active == "heuristic":
+    active_defense = HeuristicDefense()
 
 INTAKE_AGENT_ID: str = "intake_agent"
 RETRIEVAL_AGENT_ID: str = "retrieval_agent"
@@ -37,6 +44,27 @@ def intake_node(state: GraphState) -> GraphState:
     
     # Store initial input in memory
     write_memory(session_id, "initial_request", raw_input, INTAKE_AGENT_ID)
+
+    # Defense Check
+    defense_active = False
+    defense_triggered = False
+    defense_confidence = None
+    if active_defense:
+        res = active_defense.check(raw_input, {})
+        defense_active = True
+        defense_triggered = res.triggered
+        defense_confidence = res.confidence
+        
+        if defense_triggered and cfg.defense.blocking:
+            return {
+                **state,
+                "current_input": "BLOCKED BY DEFENSE",
+                "agent_outputs": {INTAKE_AGENT_ID: "BLOCKED"},
+                "model_name": "defense",
+                "defense_active": defense_active,
+                "defense_triggered": defense_triggered,
+                "defense_confidence_score": defense_confidence,
+            }
 
     client = get_llm_client(role="target_agent")
     response = client.generate(
@@ -60,7 +88,10 @@ def intake_node(state: GraphState) -> GraphState:
         "temperature": response.temperature,
         "input_tokens": response.input_tokens,
         "output_tokens": response.output_tokens,
-        "memory_ops_summary": mem_summary
+        "memory_ops_summary": mem_summary,
+        "defense_active": defense_active,
+        "defense_triggered": defense_triggered,
+        "defense_confidence_score": defense_confidence,
     }
 
 
@@ -71,6 +102,27 @@ def retrieval_node(state: GraphState) -> GraphState:
 
     client = get_llm_client(role="target_agent")
     
+    # Defense Check
+    defense_active = False
+    defense_triggered = False
+    defense_confidence = None
+    if active_defense:
+        res = active_defense.check(current_input, {})
+        defense_active = True
+        defense_triggered = res.triggered
+        defense_confidence = res.confidence
+        
+        if defense_triggered and cfg.defense.blocking:
+            return {
+                **state,
+                "current_input": "BLOCKED BY DEFENSE",
+                "agent_outputs": {RETRIEVAL_AGENT_ID: "BLOCKED"},
+                "model_name": "defense",
+                "defense_active": defense_active,
+                "defense_triggered": defense_triggered,
+                "defense_confidence_score": defense_confidence,
+            }
+            
     # Provide tools to retrieval agent to fetch data if needed.
     # In Ollama, tools can be sent, but since our llm wrapper doesn't support tools yet,
     # we'll fake the retrieval logic by asking the LLM to extract customer IDs.
@@ -83,19 +135,36 @@ def retrieval_node(state: GraphState) -> GraphState:
     # Simple heuristic: try to find CUST-XXX in the input
     import re
     match = re.search(r"CUST-\d{3}", current_input)
-    retrieved_data = None
+    kb_match = re.search(r"KB-\d{3}", current_input) or ("system alerts" in current_input.lower())
+    
+    retrieved_data = {}
+    
     if match:
         cust_id = match.group(0)
         from reconmind.platform_.tools import query_db
-        retrieved_data = query_db(cust_id)
+        retrieved_data["customer_info"] = query_db(cust_id)
+        
+    if kb_match:
+        # Load KB
+        kb_override = state.get("kb_override")
+        if kb_override:
+            retrieved_data["kb_articles"] = kb_override
+        else:
+            from pathlib import Path
+            kb_path = Path(__file__).resolve().parent.parent.parent / "mock_data" / "knowledge_base.json"
+            if kb_path.exists():
+                with kb_path.open() as f:
+                    retrieved_data["kb_articles"] = json.load(f)
+
+    if retrieved_data:
         write_memory(session_id, "customer_context", retrieved_data, RETRIEVAL_AGENT_ID)
-        mem_summary = f"Wrote customer_context for {cust_id}"
+        mem_summary = f"Wrote context to memory"
     else:
-        mem_summary = "No CUST ID found, no memory written"
+        mem_summary = "No CUST ID or KB request found, no memory written"
 
     system_prompt = RETRIEVAL_SYSTEM_PROMPT
     if retrieved_data:
-        system_prompt += f"\\n\\nRetrieved DB context:\\n{json.dumps(retrieved_data, indent=2)}"
+        system_prompt += f"\\n\\nRetrieved context:\\n{json.dumps(retrieved_data, indent=2)}"
 
     response = client.generate(
         system_prompt=system_prompt,
@@ -115,7 +184,10 @@ def retrieval_node(state: GraphState) -> GraphState:
         "temperature": response.temperature,
         "input_tokens": response.input_tokens,
         "output_tokens": response.output_tokens,
-        "memory_ops_summary": mem_summary
+        "memory_ops_summary": mem_summary,
+        "defense_active": defense_active,
+        "defense_triggered": defense_triggered,
+        "defense_confidence_score": defense_confidence,
     }
 
 

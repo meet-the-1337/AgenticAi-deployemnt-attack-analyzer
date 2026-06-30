@@ -44,6 +44,12 @@ _COLUMN_MIGRATIONS: list[tuple[str, str, str]] = [
     ("events", "temperature",   "ALTER TABLE events ADD COLUMN temperature REAL"),
     ("events", "input_tokens",  "ALTER TABLE events ADD COLUMN input_tokens INTEGER"),
     ("events", "output_tokens", "ALTER TABLE events ADD COLUMN output_tokens INTEGER"),
+    ("events", "defense_confidence_score", "ALTER TABLE events ADD COLUMN defense_confidence_score REAL"),
+    ("runs", "attack_objective", "ALTER TABLE runs ADD COLUMN attack_objective TEXT"),
+    ("runs", "attack_strength", "ALTER TABLE runs ADD COLUMN attack_strength TEXT"),
+    ("runs", "expected_signal", "ALTER TABLE runs ADD COLUMN expected_signal TEXT"),
+    ("runs", "injection_outcome", "ALTER TABLE runs ADD COLUMN injection_outcome TEXT"),
+    ("runs", "judge_confidence", "ALTER TABLE runs ADD COLUMN judge_confidence REAL"),
 ]
 
 

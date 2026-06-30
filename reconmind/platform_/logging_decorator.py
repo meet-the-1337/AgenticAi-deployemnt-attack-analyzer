@@ -72,6 +72,9 @@ def _write_event(
     model_name: str,
     latency_ms: float,
     timestamp: str,
+    defense_active: int = 0,
+    defense_triggered: int = 0,
+    defense_confidence_score: Optional[float] = None,
     tool_called: Optional[str] = None,
     tool_result_status: Optional[str] = None,
     memory_ops_summary: Optional[str] = None,
@@ -113,19 +116,17 @@ def _write_event(
             input_prompt_text, output_text,
             tool_called, tool_result_status, memory_ops_summary,
             model_name, latency_ms,
-            defense_active, defense_triggered,
+            defense_active, defense_triggered, defense_confidence_score,
             injection_present_this_event, injection_outcome,
-            temperature, input_tokens, output_tokens,
-            timestamp
+            timestamp, temperature, input_tokens, output_tokens
         ) VALUES (
             :event_id, :run_id, :hop_index, :agent_id, :agent_role,
             :input_prompt_text, :output_text,
             :tool_called, :tool_result_status, :memory_ops_summary,
             :model_name, :latency_ms,
-            0, 0,
+            :defense_active, :defense_triggered, :defense_confidence_score,
             0, NULL,
-            :temperature, :input_tokens, :output_tokens,
-            :timestamp
+            :timestamp, :temperature, :input_tokens, :output_tokens
         )
     """
 
@@ -142,6 +143,9 @@ def _write_event(
         "memory_ops_summary": memory_ops_summary,
         "model_name": model_name,
         "latency_ms": latency_ms,
+        "defense_active": defense_active,
+        "defense_triggered": defense_triggered,
+        "defense_confidence_score": defense_confidence_score,
         "temperature": temperature,
         "input_tokens": input_tokens,
         "output_tokens": output_tokens,
@@ -256,11 +260,14 @@ def logged_node(
                 input_prompt_text=input_text,
                 output_text=output_text,
                 tool_called=tool_called,
-            tool_result_status=tool_result_status,
-            memory_ops_summary=memory_ops_summary,
-            model_name=model_name,
+                tool_result_status=tool_result_status,
+                memory_ops_summary=memory_ops_summary,
+                model_name=model_name,
                 latency_ms=latency_ms,
                 timestamp=timestamp,
+                defense_active=1 if getattr(result, "get", lambda k: False)("defense_active") else 0,
+                defense_triggered=1 if getattr(result, "get", lambda k: False)("defense_triggered") else 0,
+                defense_confidence_score=getattr(result, "get", lambda k: None)("defense_confidence_score"),
                 temperature=temperature,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,

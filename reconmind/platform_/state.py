@@ -79,3 +79,10 @@ class GraphState(_GraphStateRequired, total=False):
     tool_called: Optional[str]
     tool_result_status: Optional[str]
     memory_ops_summary: Optional[str]
+
+    kb_override: Optional[dict]
+    """Used by IndirectInjectionAttack to mock KB data"""
+
+    defense_active: Optional[bool]
+    defense_triggered: Optional[bool]
+    defense_confidence_score: Optional[float]
