@@ -1,0 +1,31 @@
+# reconmind/config.yaml
+# Single source of truth for all runtime configuration.
+# Add new sections as milestones land — never hard-code values in application code.
+
+database:
+  path: "data/reconmind.db"   # relative to repo root; init_db.py resolves to absolute
+
+llm:
+  provider: "ollama"
+  ollama_base_url: "http://localhost:11434"
+
+  # Per-role LLM settings.
+  # get_llm_client(role) looks up roles[role], falling back to roles["default"].
+  # This indirection lets M8's judge-based defense use a different model/temp
+  # by changing only this file, not any Python code.
+  roles:
+    default:
+      model: "qwen3:8b"     # running on RTX 4060 8GB — fits fully on GPU
+      temperature: 0.7
+
+    target_agent:
+      model: "qwen3:8b"
+      temperature: 0.7      # non-zero: confirms non-determinism in acceptance test
+
+    judge:
+      model: "qwen3:8b"
+      temperature: 0.0      # deterministic: judge verdicts must be reproducible
+
+logging:
+  level: "INFO"             # DEBUG | INFO | WARNING | ERROR
+  format: "%(asctime)s [%(levelname)s] %(name)s — %(message)s"

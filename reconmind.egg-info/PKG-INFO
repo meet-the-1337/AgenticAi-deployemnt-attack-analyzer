@@ -1,0 +1,8 @@
+Metadata-Version: 2.4
+Name: reconmind
+Version: 0.1.0
+Requires-Python: >=3.11
+Requires-Dist: pyyaml>=6.0.2
+Requires-Dist: pydantic>=2.13.4
+Requires-Dist: langgraph>=1.2.7
+Requires-Dist: httpx>=0.27.0
