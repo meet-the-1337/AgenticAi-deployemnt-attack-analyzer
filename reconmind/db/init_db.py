@@ -63,7 +63,7 @@ def _drop_all_tables(conn: sqlite3.Connection) -> None:
     so no explicit DROP INDEX statements are needed here.
     Extend this list when new tables are added in later milestones.
     """
-    tables_in_drop_order = ["events", "runs"]
+    tables_in_drop_order = ["events", "session_memory", "runs"]
     for table in tables_in_drop_order:
         conn.execute(f"DROP TABLE IF EXISTS {table};")
         logger.info("Dropped table '%s' (reset mode).", table)

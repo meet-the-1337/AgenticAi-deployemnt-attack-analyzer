@@ -72,6 +72,9 @@ def _write_event(
     model_name: str,
     latency_ms: float,
     timestamp: str,
+    tool_called: Optional[str] = None,
+    tool_result_status: Optional[str] = None,
+    memory_ops_summary: Optional[str] = None,
     temperature: Optional[float] = None,
     input_tokens: Optional[int] = None,
     output_tokens: Optional[int] = None,
@@ -117,7 +120,7 @@ def _write_event(
         ) VALUES (
             :event_id, :run_id, :hop_index, :agent_id, :agent_role,
             :input_prompt_text, :output_text,
-            NULL, NULL, NULL,
+            :tool_called, :tool_result_status, :memory_ops_summary,
             :model_name, :latency_ms,
             0, 0,
             0, NULL,
@@ -134,6 +137,9 @@ def _write_event(
         "agent_role": agent_role,
         "input_prompt_text": input_prompt_text,
         "output_text": output_text,
+        "tool_called": tool_called,
+        "tool_result_status": tool_result_status,
+        "memory_ops_summary": memory_ops_summary,
         "model_name": model_name,
         "latency_ms": latency_ms,
         "temperature": temperature,
@@ -238,6 +244,9 @@ def logged_node(
             temperature: Optional[float] = result.get("temperature")
             input_tokens: Optional[int] = result.get("input_tokens")
             output_tokens: Optional[int] = result.get("output_tokens")
+            tool_called: Optional[str] = result.get("tool_called")
+            tool_result_status: Optional[str] = result.get("tool_result_status")
+            memory_ops_summary: Optional[str] = result.get("memory_ops_summary")
 
             _write_event(
                 run_id=run_id,
@@ -246,7 +255,10 @@ def logged_node(
                 agent_role=agent_role,
                 input_prompt_text=input_text,
                 output_text=output_text,
-                model_name=model_name,
+                tool_called=tool_called,
+            tool_result_status=tool_result_status,
+            memory_ops_summary=memory_ops_summary,
+            model_name=model_name,
                 latency_ms=latency_ms,
                 timestamp=timestamp,
                 temperature=temperature,

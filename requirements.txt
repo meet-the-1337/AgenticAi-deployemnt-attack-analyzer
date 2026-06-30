@@ -4,3 +4,10 @@ pydantic==2.13.4
 
 # Milestone 2 — agent pipeline skeleton
 langgraph==1.2.7
+
+# Milestone 4 - Tooling & Memory Dependencies
+langchain
+langsmith
+langchain-community
+langchain-core
+langchain-text-splitters

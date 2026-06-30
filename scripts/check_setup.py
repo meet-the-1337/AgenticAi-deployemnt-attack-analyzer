@@ -78,7 +78,7 @@ def main() -> None:
     try:
         db_path = cfg.database.resolved_path
         provider = cfg.llm.provider
-        model = cfg.llm.openai_model if provider == "openai" else cfg.llm.ollama_model
+        model = cfg.llm.role("default").model
         print("✓ Config loaded")
         print(f"  DB path  : {db_path}")
         print(f"  LLM      : {provider} / {model}")
@@ -112,7 +112,8 @@ def main() -> None:
             "input_prompt_text", "output_text", "tool_called",
             "tool_result_status", "memory_ops_summary", "model_name",
             "latency_ms", "defense_active", "defense_triggered",
-            "injection_present_this_event", "injection_outcome", "timestamp",
+            "injection_present_this_event", "injection_outcome",
+            "temperature", "input_tokens", "output_tokens", "timestamp",
         ],
     }
 

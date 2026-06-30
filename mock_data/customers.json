@@ -1,0 +1,12 @@
+{
+    "CUST-001": {"name": "Alice Smith", "email": "alice@example.com", "tier": "premium", "status": "active"},
+    "CUST-002": {"name": "Bob Jones", "email": "bob@example.com", "tier": "standard", "status": "active"},
+    "CUST-003": {"name": "Charlie Brown", "email": "charlie@example.com", "tier": "enterprise", "status": "suspended"},
+    "CUST-004": {"name": "Diana Prince", "email": "diana@example.com", "tier": "premium", "status": "active"},
+    "CUST-005": {"name": "Evan Wright", "email": "evan@example.com", "tier": "standard", "status": "pending_verification"},
+    "CUST-006": {"name": "Fiona Gallagher", "email": "fiona@example.com", "tier": "standard", "status": "active"},
+    "CUST-007": {"name": "George Miller", "email": "george@example.com", "tier": "enterprise", "status": "active"},
+    "CUST-008": {"name": "Hannah Abbott", "email": "hannah@example.com", "tier": "premium", "status": "active"},
+    "CUST-009": {"name": "Ian Malcolm", "email": "ian@example.com", "tier": "standard", "status": "active"},
+    "CUST-010": {"name": "Jane Doe", "email": "jane@example.com", "tier": "enterprise", "status": "active"}
+}

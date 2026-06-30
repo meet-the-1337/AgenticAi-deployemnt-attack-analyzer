@@ -67,3 +67,20 @@ CREATE TABLE IF NOT EXISTS events (
 CREATE INDEX IF NOT EXISTS idx_events_run_id    ON events(run_id);
 CREATE INDEX IF NOT EXISTS idx_events_agent_id  ON events(agent_id);
 CREATE INDEX IF NOT EXISTS idx_runs_scenario_id ON runs(scenario_id);
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- session_memory
+-- Shared memory store for agents during a run.
+-- Append-only: every update creates a new version instead of overwriting.
+-- ─────────────────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS session_memory (
+    memory_id                   TEXT    PRIMARY KEY,      -- UUID
+    session_id                  TEXT    NOT NULL,         -- Links to the session/run
+    key                         TEXT    NOT NULL,         -- The key being stored (e.g. "customer_context")
+    value                       TEXT    NOT NULL,         -- The JSON/text value
+    version                     INTEGER NOT NULL,         -- Monotonically increasing per key per session
+    written_by_agent            TEXT    NOT NULL,         -- Which agent wrote this version
+    timestamp                   TEXT    NOT NULL          -- ISO-8601 UTC
+);
+
+CREATE INDEX IF NOT EXISTS idx_session_memory_session_key ON session_memory(session_id, key);

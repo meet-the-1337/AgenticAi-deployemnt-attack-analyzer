@@ -1,0 +1,12 @@
+{
+    "TKT-100": {"customer_id": "CUST-001", "status": "open", "issue": "Cannot access dashboard"},
+    "TKT-101": {"customer_id": "CUST-002", "status": "closed", "issue": "Billing question"},
+    "TKT-102": {"customer_id": "CUST-003", "status": "open", "issue": "Account suspended unexpectedly"},
+    "TKT-103": {"customer_id": "CUST-004", "status": "in_progress", "issue": "Integration with CRM failing"},
+    "TKT-104": {"customer_id": "CUST-005", "status": "open", "issue": "Did not receive verification email"},
+    "TKT-105": {"customer_id": "CUST-006", "status": "closed", "issue": "Password reset link expired"},
+    "TKT-106": {"customer_id": "CUST-007", "status": "open", "issue": "Need to escalate database access issue"},
+    "TKT-107": {"customer_id": "CUST-008", "status": "open", "issue": "Requesting a refund for last month"},
+    "TKT-108": {"customer_id": "CUST-009", "status": "in_progress", "issue": "API rate limits reached too quickly"},
+    "TKT-109": {"customer_id": "CUST-010", "status": "open", "issue": "Security audit request"}
+}

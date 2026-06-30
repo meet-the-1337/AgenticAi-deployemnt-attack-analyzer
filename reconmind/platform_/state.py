@@ -75,3 +75,7 @@ class GraphState(_GraphStateRequired, total=False):
     """LLM sampling temperature used by the most recent node call.
     Set by node bodies after each LLM call so the decorator can log it
     to the events table. NULL for stub/non-LLM events."""
+
+    tool_called: Optional[str]
+    tool_result_status: Optional[str]
+    memory_ops_summary: Optional[str]
