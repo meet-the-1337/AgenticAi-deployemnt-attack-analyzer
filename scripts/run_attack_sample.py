@@ -35,13 +35,13 @@ logger = logging.getLogger(__name__)
 
 import json
 
-def _create_run_row(run_id: str, db_path: Path, attack: Any) -> None:
+def _create_run_row(run_id: str, session_id: str, db_path: Path, attack: Any) -> None:
     sql = """
         INSERT INTO runs (
-            run_id, scenario_id, topology_type, injection_type, entry_agent_id,
+            run_id, scenario_id, session_id, topology_type, injection_type, entry_agent_id,
             attack_objective, attack_strength, expected_signal,
             run_started_at, run_status
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """
     now = datetime.now(tz=timezone.utc).isoformat()
     expected_signal_json = json.dumps(attack.expected_signal())
@@ -49,7 +49,7 @@ def _create_run_row(run_id: str, db_path: Path, attack: Any) -> None:
     with sqlite3.connect(str(db_path)) as conn:
         conn.execute("PRAGMA foreign_keys = ON;")
         conn.execute(sql, (
-            run_id, "attack_sample", "linear", 
+            run_id, "attack_sample", session_id, "linear", 
             attack.config.attack_type, attack.config.entry_point,
             attack.config.objective, attack.config.strength, expected_signal_json,
             now, "completed"
@@ -121,7 +121,7 @@ def main() -> None:
     print("Injecting payload...")
     modified_state = attack.inject(initial_state)
     
-    _create_run_row(run_id, db_path, attack)
+    _create_run_row(run_id, session_id, db_path, attack)
     
     print(f"Payload to be sent: {modified_state['current_input']}")
     print("Invoking graph...")

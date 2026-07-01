@@ -18,6 +18,7 @@
 CREATE TABLE IF NOT EXISTS runs (
     run_id                  TEXT    PRIMARY KEY,          -- UUID, set by application
     scenario_id             TEXT    NOT NULL,             -- human-readable scenario name
+    session_id              TEXT,                         -- M7: link to session_memory
     topology_type           TEXT    NOT NULL,             -- e.g. "linear", "star", "mesh"
     defense_config          TEXT,                         -- JSON blob: which defenses active + params
     injection_type          TEXT,                         -- e.g. "direct", "indirect", "none"

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from typing import Any, Dict
 
 from reconmind.llm import get_llm_client
@@ -23,14 +24,12 @@ from reconmind.platform_.prompts import (
 from reconmind.platform_.state import GraphState
 from reconmind.platform_.tools import TOOL_REGISTRY
 from reconmind.config import cfg
-from reconmind.defenses.heuristic import HeuristicDefense
+from reconmind.defenses.defense_factory import get_defense
 
 logger = logging.getLogger(__name__)
 
-# Initialize defense if active
-active_defense = None
-if cfg.defense.active == "heuristic":
-    active_defense = HeuristicDefense()
+# NOTE: defense will be fetched lazily inside each node
+
 
 INTAKE_AGENT_ID: str = "intake_agent"
 RETRIEVAL_AGENT_ID: str = "retrieval_agent"
@@ -46,17 +45,14 @@ def intake_node(state: GraphState) -> GraphState:
     write_memory(session_id, "initial_request", raw_input, INTAKE_AGENT_ID)
 
     # Defense Check
-    defense_active = False
-    defense_triggered = False
-    defense_confidence = None
-    if active_defense:
-        res = active_defense.check(raw_input, {})
-        defense_active = True
-        defense_triggered = res.triggered
-        defense_confidence = res.confidence
-        
-        if defense_triggered and cfg.defense.blocking:
-            return {
+    defense = get_defense(cfg)
+    res = defense.check(raw_input, {})
+    defense_active = True if cfg.defense.active != "none" else False
+    defense_triggered = res.triggered
+    defense_confidence = res.confidence
+    
+    if defense_triggered and cfg.defense.blocking:
+        return {
                 **state,
                 "current_input": "BLOCKED BY DEFENSE",
                 "agent_outputs": {INTAKE_AGENT_ID: "BLOCKED"},
@@ -103,17 +99,14 @@ def retrieval_node(state: GraphState) -> GraphState:
     client = get_llm_client(role="target_agent")
     
     # Defense Check
-    defense_active = False
-    defense_triggered = False
-    defense_confidence = None
-    if active_defense:
-        res = active_defense.check(current_input, {})
-        defense_active = True
-        defense_triggered = res.triggered
-        defense_confidence = res.confidence
-        
-        if defense_triggered and cfg.defense.blocking:
-            return {
+    defense = get_defense(cfg)
+    res = defense.check(current_input, {})
+    defense_active = True if cfg.defense.active != "none" else False
+    defense_triggered = res.triggered
+    defense_confidence = res.confidence
+    
+    if defense_triggered and cfg.defense.blocking:
+        return {
                 **state,
                 "current_input": "BLOCKED BY DEFENSE",
                 "agent_outputs": {RETRIEVAL_AGENT_ID: "BLOCKED"},
@@ -133,7 +126,6 @@ def retrieval_node(state: GraphState) -> GraphState:
     # Wait, the spec says action_node uses tools. "retrieval_node (LLM, reads mock_data via query_db) -> writes memory".
     
     # Simple heuristic: try to find CUST-XXX in the input
-    import re
     match = re.search(r"CUST-\d{3}", current_input)
     kb_match = re.search(r"KB-\d{3}", current_input) or ("system alerts" in current_input.lower())
     
@@ -230,7 +222,6 @@ Otherwise, just output your normal response.
     tool_result_status = None
     
     # Simple parse for tool calls
-    import re
     json_match = re.search(r"```json\s*(\{.*?\})\s*```", output_text, re.DOTALL)
     if json_match:
         try:

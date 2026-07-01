@@ -29,6 +29,8 @@ llm:
 defense:
   active: "heuristic"       # "heuristic", "judge", or "none"
   blocking: false           # if true, block input on trigger. if false, log only
+  judge:
+    confidence_threshold: 0.7   # tune without code changes
 
 logging:
   level: "INFO"             # DEBUG | INFO | WARNING | ERROR

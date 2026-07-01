@@ -54,3 +54,13 @@ def write_memory(session_id: str, key: str, value: Any, written_by_agent: str) -
             memory_id, session_id, key, value_str, new_version, written_by_agent, timestamp
         ))
         conn.commit()
+def clear_session_memory(session_id: str) -> None:
+    """Delete all memory entries for a given session.
+    Used by the campaign runner to ensure isolation between runs.
+    """
+    sql = """
+        DELETE FROM session_memory WHERE session_id = ?
+    """
+    with _get_conn() as conn:
+        conn.execute(sql, (session_id,))
+        conn.commit()

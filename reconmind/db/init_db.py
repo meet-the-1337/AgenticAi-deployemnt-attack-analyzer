@@ -50,6 +50,7 @@ _COLUMN_MIGRATIONS: list[tuple[str, str, str]] = [
     ("runs", "expected_signal", "ALTER TABLE runs ADD COLUMN expected_signal TEXT"),
     ("runs", "injection_outcome", "ALTER TABLE runs ADD COLUMN injection_outcome TEXT"),
     ("runs", "judge_confidence", "ALTER TABLE runs ADD COLUMN judge_confidence REAL"),
+    ("runs", "session_id", "ALTER TABLE runs ADD COLUMN session_id TEXT"),
 ]
 
 

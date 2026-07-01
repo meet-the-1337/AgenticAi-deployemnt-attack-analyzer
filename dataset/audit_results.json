@@ -1,0 +1,53 @@
+{
+  "drop_run_ids": [
+    "befa8423-57bf-4173-aece-9ce5a0495ef3",
+    "b3a5210b-0f33-4bd9-8ea6-b7b0c366e9b3",
+    "ea4cf521-a6d3-4af4-b405-8bc552c4134b",
+    "3bc2d705-cf02-4dee-b069-335bb8ead2cb",
+    "3cf215cb-98a4-4507-b23f-b106dc8d530b",
+    "0af25488-6924-4731-a0d5-455e7a744fd3",
+    "5a28cd65-f418-44ae-a0cc-ac03876515ff",
+    "5d67e3bc-8b7e-40e1-9390-493f97a9fc13",
+    "0331e475-d958-4e1d-ac40-e70f4fbd1730",
+    "312f119b-6bf3-4e39-8ed6-5b4e18be5c1b",
+    "bd22a52c-30a8-43d8-8286-37b982e191e9",
+    "5299d4af-cfd0-4ca3-a329-927961aaed74",
+    "32cd948d-2c53-4bcf-89dc-5bcfbd961ae0",
+    "746e04d5-05a8-40b6-af55-c635bb9be99a",
+    "991d2eb8-2b54-4b8a-8469-bad8fb987432",
+    "92ed8e56-e8ca-402b-887c-70fa916b9277",
+    "b6b89a09-ee9e-434e-8c4a-c54f6cba1cd1",
+    "4cef1cec-253d-47e3-8821-373b72b59f4e",
+    "a46ee910-aa7e-441c-a07e-e6507f52f9e4",
+    "1b1f642b-1926-4d6c-a215-82c747715b35",
+    "d60817b6-0270-4529-8a74-3611f2fc9673",
+    "6e1c8bac-d1a0-41d2-a705-f4651d390a06",
+    "d57c854d-68d5-45b9-ac7e-62fe4fe087b7",
+    "e1abde1e-5315-4dcf-b30a-1d03b8493cb2",
+    "22a969bd-0ee6-4d6e-b2a8-26e003524ce7",
+    "bc3d614c-ad91-4f01-8cfa-3cff0b6a6de4",
+    "116d8cee-9f29-4d30-8e91-c8f6ce70d23a",
+    "a8366ef8-decb-4060-9e24-cbff5e293286",
+    "88da01d9-ee34-4887-b01a-d3ccbf11a33b",
+    "76b9229d-0d45-40ed-83af-a6ba2f4940d5",
+    "6e740f9c-a35c-4f5a-82de-4cefc83cb78b",
+    "421c5be8-a0b3-48b0-ad6e-0f4131b26bf1",
+    "7836f8ac-a185-465d-a9f5-938f52e36fae",
+    "5f01d463-ac30-490a-bb50-e1108ede6bb3"
+  ],
+  "drop_columns": [
+    "topology_type",
+    "critical_asset_agent_id",
+    "total_hops",
+    "hops_to_compromise",
+    "detecting_defense"
+  ],
+  "uncertain_run_ids": [
+    "6b30700b-da03-40cc-b580-c262f32eb90e",
+    "3d8266fa-78a0-4518-bc72-31b56c8adb14",
+    "171e932d-a559-427e-8def-c6e69077849d",
+    "81e3ecc5-2f45-40c1-9405-afb2de67c778",
+    "4f08ba21-0ba4-4edb-8615-a777f2063bff",
+    "0add125f-adfb-4535-8e7c-083266792dfc"
+  ]
+}

@@ -44,11 +44,7 @@ def verify_run(run_id: str) -> str:
         
         # Tier 2: Memory check (for memory_poisoning specifically)
         if not result and injection_type == "memory_poisoning":
-            session_id = events[0]["run_id"] if events else run_id # our scripts set session_id to related or run_id? Wait, session_id is not in events.
-            # We can grab session_id from session_memory by run_id but session_memory links to session_id. 
-            # In our mock runs we made session_id = run_id or sess_attack_..., we don't store session_id in runs!
-            # Let's just pass db_path to memory check to query session_memory by timestamp maybe? 
-            # Or just check events for memory_ops_summary matching the expected signal.
+            session_id = run_row["session_id"]
             result = check_memory_signal(events, expected_signal)
             tier_used = "Tier 2 (Memory)"
             

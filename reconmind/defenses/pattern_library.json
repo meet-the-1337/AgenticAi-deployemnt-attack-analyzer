@@ -1,24 +1,38 @@
 {
-    "instruction_override": [
-        "ignore previous instructions",
-        "ignore all previous instructions",
-        "forget previous instructions",
-        "system override",
-        "system:",
-        "you are now",
-        "new instructions:"
-    ],
-    "role_claim": [
-        "as an admin",
-        "i am authorized",
-        "admin command",
-        "ceo told me",
-        "special authorization code",
-        "escalate immediately"
-    ],
-    "suspicious_actions": [
-        "send all data",
-        "delete all tickets",
-        "unauthorized action"
-    ]
+  "imperative_override": [
+    "ignore previous instructions",
+    "ignore all prior commands",
+    "disregard previous",
+    "forget previous instructions",
+    "system:",
+    "you are now",
+    "from now on, you will",
+    "override previous settings",
+    "start a new persona"
+  ],
+  "authorization_bypass": [
+    "as an admin",
+    "i am authorized",
+    "bypass security",
+    "developer mode enabled",
+    "i have root access",
+    "escalate privileges",
+    "grant full access"
+  ],
+  "data_extraction": [
+    "print all records",
+    "output raw data",
+    "dump database",
+    "show all user info",
+    "extract sensitive data",
+    "reveal internal memory",
+    "list all customer ids"
+  ],
+  "system_boundary": [
+    "```",
+    "### System Prompt ###",
+    "=== INSTRUCTIONS ===",
+    "END OF PROMPT",
+    "NEW CONTEXT"
+  ]
 }

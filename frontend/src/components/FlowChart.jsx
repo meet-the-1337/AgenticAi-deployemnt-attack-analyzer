@@ -11,29 +11,16 @@ function FlowChart({ events, outcome }) {
     memory: 'green'
   };
   
-  // A simple heuristic to color nodes based on defense and outcome
-  // We check the events array to see what happened.
-  let attackReachedHop = -1;
-  let defenseFiredAt = null;
-  
   events.forEach(e => {
-    if (e.defense_triggered) {
-      defenseFiredAt = e.agent_role;
-      nodeStates[e.agent_role] = 'yellow';
+    if (e.injection_present_this_event && outcome === 'full_success') {
+      nodeStates[e.agent_role] = 'red';
     }
-    if (e.injection_present_this_event) {
-      attackReachedHop = Math.max(attackReachedHop, e.hop_index);
+    if (e.defense_triggered) {
+      nodeStates[e.agent_role] = nodeStates[e.agent_role] !== 'red' ? 'yellow' : 'red';
     }
   });
   
-  if (outcome === 'full_success') {
-    // Attack succeeded, mark Action node red
-    nodeStates.action = 'red';
-    // If memory poisoning, mark memory red
-    if (events.length > 0 && events[0].run_id.includes("memory_poisoning")) {
-        nodeStates.memory = 'red';
-    }
-  } else if (outcome === 'partial') {
+  if (outcome === 'partial') {
     nodeStates.action = 'yellow';
   }
   

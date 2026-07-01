@@ -22,3 +22,18 @@ env/
 # Secrets — NEVER commit keys
 .env
 *.env
+
+# Node dependencies & builds
+node_modules/
+frontend/node_modules/
+dist/
+
+# Egg info
+*.egg-info/
+
+# Databases
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+

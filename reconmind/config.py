@@ -115,9 +115,13 @@ class LoggingConfig(BaseModel):
     level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
     format: str = "%(asctime)s [%(levelname)s] %(name)s — %(message)s"
 
+class JudgeDefenseConfig(BaseModel):
+    confidence_threshold: float = 0.7
+
 class DefenseConfig(BaseModel):
     active: str = "none"
     blocking: bool = False
+    judge: JudgeDefenseConfig = JudgeDefenseConfig()
 
 
 class Config(BaseModel):

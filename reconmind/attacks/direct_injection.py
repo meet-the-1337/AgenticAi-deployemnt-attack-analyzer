@@ -41,7 +41,7 @@ class DirectInjectionAttack(Attack):
         # In a direct injection, the payload replaces or is appended to the current input.
         # Here we just replace the user's current input with the attack payload.
         new_state = initial_state.copy()
-        new_state["current_input"] = payload
+        new_state["current_input"] = f"{initial_state['current_input']}\n\n{payload}"
         return new_state
 
     def expected_signal(self) -> Dict[str, Any]:

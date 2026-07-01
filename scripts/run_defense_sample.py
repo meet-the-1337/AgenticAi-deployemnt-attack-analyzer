@@ -33,14 +33,14 @@ from datetime import datetime, timezone
 logging.basicConfig(level=cfg.logging.level, format=cfg.logging.format)
 logger = logging.getLogger(__name__)
 
-def _create_run_row(run_id: str, db_path: Path, attack: Any) -> None:
+def _create_run_row(run_id: str, session_id: str, db_path: Path, attack: Any) -> None:
     import json
     sql = """
         INSERT INTO runs (
-            run_id, scenario_id, topology_type, injection_type, entry_agent_id,
+            run_id, scenario_id, session_id, topology_type, injection_type, entry_agent_id,
             attack_objective, attack_strength, expected_signal,
             run_started_at, run_status
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """
     now = datetime.now(tz=timezone.utc).isoformat()
     expected_signal_json = json.dumps(attack.expected_signal())
@@ -48,7 +48,7 @@ def _create_run_row(run_id: str, db_path: Path, attack: Any) -> None:
     with sqlite3.connect(str(db_path)) as conn:
         conn.execute("PRAGMA foreign_keys = ON;")
         conn.execute(sql, (
-            run_id, "defense_test", "linear", 
+            run_id, "defense_test", session_id, "linear", 
             attack.config.attack_type, attack.config.entry_point,
             attack.config.objective, attack.config.strength, expected_signal_json,
             now, "completed"
@@ -74,7 +74,7 @@ def run_attack_with_defense(attack_cls, attack_type: str, strength: str) -> dict
     modified_state["run_id"] = run_id
     
     db_path = cfg.database.resolved_path
-    _create_run_row(run_id, db_path, attack)
+    _create_run_row(run_id, initial_state["session_id"], db_path, attack)
     
     # We just run the first two nodes to check if defense triggered
     # since intake and retrieval have the defense.
