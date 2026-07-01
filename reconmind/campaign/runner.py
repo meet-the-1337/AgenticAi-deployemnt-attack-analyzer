@@ -13,7 +13,7 @@ import traceback
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Set, Tuple
 
 from reconmind.config import cfg
 from reconmind.platform_.graph import build_graph
@@ -35,14 +35,52 @@ def _get_db():
     conn.execute("PRAGMA foreign_keys = ON;")
     return conn
 
+
+# ---------------------------------------------------------------------------
+# Resume helpers
+# ---------------------------------------------------------------------------
+def _get_completed_run_signatures(db_path: str) -> Set[Tuple]:
+    """
+    Returns a set of (injection_type, objective, strength, defense_config, repeat_index)
+    tuples for runs that completed successfully.
+    Used by --resume to skip already-done work.
+    """
+    try:
+        with sqlite3.connect(db_path) as conn:
+            rows = conn.execute("""
+                SELECT injection_type, attack_objective, attack_strength,
+                       defense_config, repeat_index
+                FROM runs
+                WHERE run_status = 'completed'
+                AND scenario_id = 'campaign_run'
+            """).fetchall()
+        return set(rows)
+    except Exception:
+        return set()
+
+
+def _config_signature(config: RunConfig) -> Tuple:
+    """Build the matching signature tuple for a RunConfig."""
+    return (
+        config.attack_type,
+        config.objective,
+        config.strength,
+        config.defense_config,
+        config.repeat_index,
+    )
+
+
+# ---------------------------------------------------------------------------
+# DB row helpers
+# ---------------------------------------------------------------------------
 def _create_run_row(run_id: str, session_id: str, config: RunConfig, expected_signal: str) -> None:
     now = datetime.now(tz=timezone.utc).isoformat()
     sql = """
         INSERT INTO runs (
             run_id, scenario_id, topology_type, defense_config,
             injection_type, attack_objective, attack_strength, expected_signal,
-            run_started_at, run_status
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            run_started_at, run_status, session_id, repeat_index
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """
     with _get_db() as conn:
         conn.execute(sql, (
@@ -55,7 +93,9 @@ def _create_run_row(run_id: str, session_id: str, config: RunConfig, expected_si
             config.strength,
             expected_signal,
             now,
-            "running"
+            "running",
+            session_id,
+            config.repeat_index,
         ))
         conn.commit()
 
@@ -70,6 +110,10 @@ def _update_run_status(run_id: str, status: str, outcome: str = None) -> None:
         conn.execute(sql, (status, now, outcome, run_id))
         conn.commit()
 
+
+# ---------------------------------------------------------------------------
+# Main campaign loop
+# ---------------------------------------------------------------------------
 def run_campaign(configs: list[RunConfig], dry_run: bool = False, resume: bool = False) -> None:
     if dry_run:
         from reconmind.campaign.matrix import print_matrix_summary
@@ -78,21 +122,27 @@ def run_campaign(configs: list[RunConfig], dry_run: bool = False, resume: bool =
 
     graph = build_graph()
     total = len(configs)
-    
+
     # Check already completed runs for resume
-    completed_runs = 0
+    completed: Set[Tuple] = set()
+    skipped = 0
     if resume:
-        with _get_db() as conn:
-            # We assume a scenario_id or just count total completed runs recently.
-            # But normally we'd check which configs were completed.
-            # For simplicity, we just count.
-            pass
+        completed = _get_completed_run_signatures(str(cfg.database.resolved_path))
+        print(f"[resume] Found {len(completed)} already-completed runs in DB")
 
     for i, config in enumerate(configs, 1):
+        # Skip completed runs when resuming
+        if resume and _config_signature(config) in completed:
+            skipped += 1
+            continue
+
         run_id = str(uuid.uuid4())
         session_id = f"sess_{run_id}"
         
-        print(f"Run {i}/{total} [{config.run_type}] | Defense: {config.defense_config} | Attack: {config.attack_type} | Strength: {config.strength}...")
+        run_label = f"Run {i}/{total}"
+        if skipped:
+            run_label += f" (skipped {skipped})"
+        print(f"{run_label} [{config.run_type}] | Defense: {config.defense_config} | Attack: {config.attack_type} | Strength: {config.strength}...")
         
         # Override defense config dynamically for this run (bypassing pydantic freeze)
         object.__setattr__(cfg.defense, "active", config.defense_config)
@@ -149,4 +199,4 @@ def run_campaign(configs: list[RunConfig], dry_run: bool = False, resume: bool =
             # Throttle to avoid LLM overload
             time.sleep(2.0)
 
-    print("Campaign finished.")
+    print(f"Campaign finished. (Skipped {skipped} already-completed runs)" if skipped else "Campaign finished.")

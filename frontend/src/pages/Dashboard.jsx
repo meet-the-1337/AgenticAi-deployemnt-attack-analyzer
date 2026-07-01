@@ -203,7 +203,7 @@ export default function Dashboard() {
                     run.injection_outcome === 'partial'      ? 'badge-warning' :
                     'badge-success'
                   }`}>
-                    {(run.injection_outcome || 'clean').replace('_', ' ')}
+                    {(run.injection_outcome || 'clean').replace(/_/g, ' ')}
                   </span>
                 </td>
                 <td className="text-right mono text-xs text-muted">

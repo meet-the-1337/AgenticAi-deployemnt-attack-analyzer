@@ -157,7 +157,7 @@ export default function LiveConsole() {
             <div className="result-row">
               <span className="result-label">Oracle Verdict</span>
               <span className="result-value" style={{ color: result.outcome === 'full_success' ? 'var(--accent-red)' : 'var(--accent-green)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.04em' }}>
-                {(result.outcome || '').replace('_', ' ')}
+                {(result.outcome || '').replace(/_/g, ' ')}
               </span>
             </div>
             <div className="result-row">

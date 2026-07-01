@@ -11,7 +11,7 @@
     },
     "TKT-102": {
         "customer_id": "CUST-003",
-        "status": "Closed",
+        "status": "closed",
         "issue": "Account suspended unexpectedly"
     },
     "TKT-103": {

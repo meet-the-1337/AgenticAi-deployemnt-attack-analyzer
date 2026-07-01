@@ -52,7 +52,7 @@ def generate_matrix() -> List[RunConfig]:
     objectives = ["unauthorized_action", "data_exfiltration", "denial_of_service"]
     strengths = ["subtle", "moderate", "blatant"]
     defenses = ["none", "heuristic"]
-    repeats = 3
+    repeats = 5
 
     matrix: List[RunConfig] = []
 
@@ -74,7 +74,7 @@ def generate_matrix() -> List[RunConfig]:
 
     # Clean runs
     benign_prompts = _load_benign_prompts()
-    clean_total = 100
+    clean_total = 150
     for i in range(clean_total):
         prompt = random.choice(benign_prompts)
         defense = random.choice(defenses)
@@ -106,7 +106,7 @@ def print_matrix_summary(matrix: List[RunConfig]) -> None:
       Objectives = 3
       Strengths = 3
       Defenses = 2
-      Repeats  = 3
-    Expected attack runs = 4*3*3*2*3 = 216
-    Clean runs (target) = 100
+      Repeats  = 5
+    Expected attack runs = 4*3*3*2*5 = 360
+    Clean runs (target) = 150
     """)
