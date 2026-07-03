@@ -217,3 +217,65 @@ def export_runs():
         headers={"Content-Disposition": "attachment; filename=reconmind_runs.csv"}
     )
 
+@router.get("/analytics/vulnerability-summary")
+def get_vulnerability_summary():
+    """Aggregated per-agent compromise stats for Dashboard card chart."""
+    with get_db() as conn:
+        rows = conn.execute("""
+            SELECT 
+                e.agent_role,
+                COUNT(DISTINCT e.run_id) as total_targeted,
+                COUNT(DISTINCT CASE WHEN r.injection_outcome = 'full_success' THEN e.run_id END) as total_compromised
+            FROM events e
+            JOIN runs r ON e.run_id = r.run_id
+            WHERE r.injection_type IS NOT NULL
+            GROUP BY e.agent_role
+        """).fetchall()
+    result = {}
+    for r in rows:
+        role = dict(r)
+        key = role["agent_role"]
+        result[key] = {
+            "total_targeted": role["total_targeted"],
+            "total_compromised": role["total_compromised"],
+        }
+    return {"vulnerability": result}
+
+@router.get("/runs/enriched")
+def get_enriched_runs(limit: int = 15):
+    """Full run details with prompt text and event summary for incident queue."""
+    with get_db() as conn:
+        runs = conn.execute("""
+            SELECT 
+                r.run_id, r.injection_type, r.attack_strength,
+                r.injection_outcome, r.attack_objective, r.topology_type,
+                r.total_hops, r.hops_to_compromise, r.run_started_at,
+                r.defense_config, r.entry_agent_id
+            FROM runs r
+            ORDER BY r.run_started_at DESC
+            LIMIT ?
+        """, (limit,)).fetchall()
+        
+        enriched = []
+        for run in runs:
+            rd = dict(run)
+            events = conn.execute("""
+                SELECT agent_role, input_prompt_text, output_text,
+                       tool_called, defense_triggered, defense_active,
+                       injection_present_this_event, defense_confidence_score,
+                       latency_ms, input_tokens, output_tokens, hop_index,
+                       memory_ops_summary
+                FROM events 
+                WHERE run_id = ? 
+                ORDER BY hop_index ASC
+            """, (rd["run_id"],)).fetchall()
+            rd["events"] = [dict(e) for e in events]
+            # Extract the original user prompt from the first event
+            if rd["events"]:
+                rd["prompt"] = rd["events"][0].get("input_prompt_text", "")
+            else:
+                rd["prompt"] = ""
+            enriched.append(rd)
+        
+    return {"runs": enriched}
+

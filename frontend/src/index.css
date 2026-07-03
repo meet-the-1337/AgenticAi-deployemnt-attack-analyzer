@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
+@import "tailwindcss";
+
 /* ═══════════════════════════════════════════════════════════════════════════
    DESIGN SYSTEM — ReconMind Agentic Security Platform
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -96,7 +98,7 @@ a { color: var(--text-link); text-decoration: none; }
 
 /* ── Sidebar ── */
 .sidebar {
-  width: 260px;
+  width: 224px; /* w-56 = 224px */
   background: var(--bg-surface);
   border-right: 1px solid var(--border-dim);
   display: flex;
@@ -210,11 +212,18 @@ a { color: var(--text-link); text-decoration: none; }
 /* ── Main Content ── */
 .main-content {
   flex: 1;
-  margin-left: 260px;
+  margin-left: 224px; /* updated to match sidebar width */
   padding: 40px 48px;
   position: relative;
   z-index: 1;
+  background: linear-gradient(135deg, #0a0f1a 0%, #0d1117 100%);
 }
+
+/* Metric card left border accents */
+.card-blue   { border-left: 3px solid #3b82f6; }
+.card-purple { border-left: 3px solid #8b5cf6; }
+.card-red    { border-left: 3px solid #ef4444; }
+.card-green  { border-left: 3px solid #10b981; }
 
 /* ═══════════════════════════════════════════════════════════════════════════
    COMPONENTS
@@ -654,4 +663,12 @@ select.input {
   border-radius: 12px; 
   padding: 1.5rem;
   margin: 1rem 0;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(59,130,246,0.4); }
+  50%       { box-shadow: 0 0 20px rgba(59,130,246,0.8); }
+}
+.executing-node {
+  animation: pulse-glow 1.2s ease-in-out infinite;
 }

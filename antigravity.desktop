@@ -1,9 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Antigravity IDE (GPU Accelerated)
-Comment=Run Antigravity IDE with NVIDIA GPU acceleration
-Exec=env __NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia /home/ms/.local/bin/antigravity
-Icon=utilities-terminal
-Terminal=false
-Categories=Development;IDE;

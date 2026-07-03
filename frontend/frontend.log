@@ -1,0 +1,40 @@
+
+> reconmind-frontend@0.0.0 dev
+> vite
+
+Re-optimizing dependencies because lockfile has changed
+
+  VITE v5.4.21  ready in 220 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+4:14:44 PM [vite] hmr update /src/index.css
+4:15:01 PM [vite] hmr update /src/index.css
+4:16:14 PM [vite] hmr update /src/pages/VulnerabilityReport.jsx
+4:21:54 PM [vite] hmr update /src/pages/LiveConsole.jsx
+4:21:54 PM [vite] Internal server error: Failed to resolve import "../components/AgentFlowGraph" from "src/pages/LiveConsole.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /home/ms/all projects/AGENTIC-AI + ML/reconmind/frontend/src/pages/LiveConsole.jsx:3:27
+  18 |  import { useState } from "react";
+  19 |  import axios from "axios";
+  20 |  import AgentFlowGraph from "../components/AgentFlowGraph";
+     |                              ^
+  21 |  import { Play, Terminal, AlertTriangle, ShieldCheck } from "lucide-react";
+  22 |  const NODES_BASE = [
+      at TransformPluginContext._formatError (file:///home/ms/all%20projects/AGENTIC-AI%20+%20ML/reconmind/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49258:41)
+      at TransformPluginContext.error (file:///home/ms/all%20projects/AGENTIC-AI%20+%20ML/reconmind/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49253:16)
+      at normalizeUrl (file:///home/ms/all%20projects/AGENTIC-AI%20+%20ML/reconmind/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64307:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async file:///home/ms/all%20projects/AGENTIC-AI%20+%20ML/reconmind/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64439:39
+      at async Promise.all (index 5)
+      at async TransformPluginContext.transform (file:///home/ms/all%20projects/AGENTIC-AI%20+%20ML/reconmind/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64366:7)
+      at async PluginContainer.transform (file:///home/ms/all%20projects/AGENTIC-AI%20+%20ML/reconmind/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49099:18)
+      at async loadAndTransform (file:///home/ms/all%20projects/AGENTIC-AI%20+%20ML/reconmind/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51978:27)
+      at async viteTransformMiddleware (file:///home/ms/all%20projects/AGENTIC-AI%20+%20ML/reconmind/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:62106:24)
+4:22:18 PM [vite] hmr update /src/App.jsx
+4:22:19 PM [vite] ✨ new dependencies optimized: @xyflow/react
+4:22:19 PM [vite] ✨ optimized dependencies changed. reloading
+4:22:55 PM [vite] hmr update /src/pages/LiveConsole.jsx
+4:23:30 PM [vite] hmr update /src/pages/LiveConsole.jsx
+4:25:10 PM [vite] hmr update /src/pages/LiveConsole.jsx
+4:26:43 PM [vite] hmr update /src/pages/LiveConsole.jsx

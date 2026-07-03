@@ -82,7 +82,7 @@ def generate_matrix() -> List[RunConfig]:
             run_type="clean",
             defense_config=defense,
             benign_prompt=prompt,
-            repeat_index=0,
+            repeat_index=i,
         )
         matrix.append(cfg)
 
