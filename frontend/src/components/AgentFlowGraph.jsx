@@ -29,7 +29,7 @@ export default function AgentFlowGraph({ events = [], outcome = '', activeHop = 
   
   if (activeHop >= 0 && activeHop <= 2) {
     const activeNode = HOP_TO_NODE[activeHop];
-    if (nodeStatus[activeNode] === 'pending' || !events.length) {
+    if (nodeStatus[activeNode] === 'pending') {
       nodeStatus[activeNode] = 'executing';
     }
   }
@@ -37,23 +37,30 @@ export default function AgentFlowGraph({ events = [], outcome = '', activeHop = 
   if (outcome === 'full_success') {
     const attackEvent = events.find(e => 
       e.tool_called && 
-      ['escalate_to_admin','send_email','update_ticket'].includes(e.tool_called)
+      ['escalate_to_admin', 'send_email', 'update_ticket'].includes(e.tool_called)
     );
     const targetId = attackEvent ? ROLE_TO_ID[attackEvent.agent_role] : 'action';
-    if (targetId) nodeStatus[targetId] = 'attacked';
+    nodeStatus[targetId] = 'attacked';
     
     const hasMemoryOp = events.some(e => 
       (e.memory_ops_summary || '').includes('agent_instructions'));
-    if (hasMemoryOp) nodeStatus.memory = 'memory_hit';
-  } else if (outcome && events.some(e => (e.memory_ops_summary || '').includes('agent_instructions'))) {
-      // Memory was hit but attack failed/partially failed
+    if (hasMemoryOp) {
+      nodeStatus.memory = 'attacked';
+    }
+  } else if (outcome === 'partial') {
+    // For partial compromise, highlight retrieval or action if impacted
+    const hasMemoryOp = events.some(e => 
+      (e.memory_ops_summary || '').includes('agent_instructions'));
+    if (hasMemoryOp) {
       nodeStatus.memory = 'defended';
+    }
   }
   
   // Status → visual style
   const STATUS_STYLE = {
     pending:   { background:'#1e293b', border:'2px solid #475569', color:'#94a3b8' },
-    executing: { background:'#1e3a5f', border:'2px solid #3b82f6', color:'#93c5fd', className: 'executing-node' },
+    executing: { background:'#1e3a5f', border:'2px solid #3b82f6', color:'#93c5fd',
+                 boxShadow:'0 0 12px rgba(59,130,246,0.5)', className: 'executing-node' },
     clean:     { background:'#064e3b', border:'2px solid #10b981', color:'#6ee7b7' },
     defended:  { background:'#78350f', border:'2px solid #f59e0b', color:'#fcd34d' },
     attacked:  { background:'#7f1d1d', border:'2px solid #ef4444', color:'#fca5a5' },
@@ -63,18 +70,14 @@ export default function AgentFlowGraph({ events = [], outcome = '', activeHop = 
   // Build edge labels from actual event data
   const getEdgeLabel = (source, target) => {
     if (source === 'user' && target === 'intake') {
-      return events[0]?.input_prompt_text?.substring(0, 40) + '...' || '';
+      return events[0]?.input_prompt_text?.substring(0, 45) + '...' || '';
     }
     if (source === 'intake' && target === 'retrieval') {
       const e = events.find(e => ROLE_TO_ID[e.agent_role] === 'intake');
-      return e?.output_text?.substring(0, 40) + '...' || '';
+      return e?.output_text?.substring(0, 45) + '...' || '';
     }
     if (source === 'retrieval' && target === 'action') {
       return 'KB results + customer context';
-    }
-    if (source === 'retrieval' && target === 'memory') {
-      const e = events.find(e => ROLE_TO_ID[e.agent_role] === 'retrieval' && e.memory_ops_summary);
-      return e ? e.memory_ops_summary : '';
     }
     if (source === 'memory' && target === 'action') {
       const e = events.find(e => 
@@ -100,9 +103,9 @@ export default function AgentFlowGraph({ events = [], outcome = '', activeHop = 
     { id: 'memory',    position: { x: 440, y: 280 },
       data: { label: '🧠 Memory Store' } },
   ].map(n => {
-     const styleDef = STATUS_STYLE[nodeStatus[n.id]];
-     const { className, ...styleProps } = styleDef;
-     return { 
+    const styleDef = STATUS_STYLE[nodeStatus[n.id]] || STATUS_STYLE.pending;
+    const { className, ...styleProps } = styleDef;
+    return { 
       ...n, 
       className: className || '',
       style: { 
@@ -137,12 +140,8 @@ export default function AgentFlowGraph({ events = [], outcome = '', activeHop = 
       labelBgStyle: { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 },
       labelBgPadding: [6, 4],
       style: { stroke: isNodeComplete('retrieval') ? '#3b82f6' : '#475569', strokeWidth: 2 }},
-    { id:'r-m', source:'retrieval', target:'memory', animated: isNodeComplete('retrieval') && getEdgeLabel('retrieval','memory') !== '',
-      label: isNodeComplete('retrieval') ? getEdgeLabel('retrieval','memory') : '',
-      labelStyle: { fontSize: 11, fill: '#94a3b8', fontWeight: 500 },
-      labelBgStyle: { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 },
-      labelBgPadding: [6, 4],
-      style: { stroke: isNodeComplete('retrieval') && getEdgeLabel('retrieval','memory') ? '#3b82f6' : '#475569', strokeDasharray: '4', strokeWidth: 1.5 }},
+    { id:'r-m', source:'retrieval', target:'memory', animated: false,
+      style: { stroke: '#475569', strokeDasharray: '4', strokeWidth: 1.5 }},
     { id:'m-a', source:'memory', target:'action', animated: isNodeComplete('memory'),
       label: isNodeComplete('memory') ? getEdgeLabel('memory','action') : '',
       labelStyle: { fontSize: 11, fill: '#f87171', fontWeight: 600 },
