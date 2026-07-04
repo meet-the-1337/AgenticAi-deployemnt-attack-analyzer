@@ -50,6 +50,123 @@ def _create_run_row(run_id: str, session_id: str, mode: str, attack: Any = None)
         ))
         conn.commit()
 
+_deep_model = None
+_deep_cfg   = None
+
+def _load_deep_model():
+    global _deep_model, _deep_cfg
+    if _deep_model is not None:
+        return _deep_model, _deep_cfg
+    
+    import sys
+    from pathlib import Path
+    _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+    if str(_REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(_REPO_ROOT))
+        
+    import torch
+    from analytics.deep_model import (
+        ReconMindModel, TrainConfig,
+        build_tabular_vector, extract_text_pair,
+        OUTCOME_LABELS, TYPE_LABELS,
+        CFG
+    )
+    from sentence_transformers import SentenceTransformer
+    
+    model_path = _REPO_ROOT / "models" / "deep" / "best_model.pt"
+    
+    if not model_path.exists():
+        return None, None
+    
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    ckpt   = torch.load(model_path, map_location=device, weights_only=False)
+    
+    model = ReconMindModel(CFG).to(device)
+    model.load_state_dict(ckpt["model_state"])
+    model.eval()
+    
+    embedder = SentenceTransformer(CFG.text_model, device=device)
+    
+    _deep_model = (model, embedder, device)
+    _deep_cfg   = ckpt
+    return _deep_model, _deep_cfg
+
+
+def _predict_with_deep_model(events: list) -> dict:
+    import sys
+    from pathlib import Path
+    _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+    if str(_REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(_REPO_ROOT))
+        
+    import torch
+    import torch.nn.functional as F
+    import numpy as np
+    from analytics.deep_model import (
+        build_tabular_vector, extract_text_pair,
+        OUTCOME_LABELS, TYPE_LABELS, CFG
+    )
+    import pandas as pd
+    
+    loaded = _load_deep_model()
+    if loaded[0] is None:
+        return None
+    
+    model, embedder, device = loaded[0]
+    
+    # Sort by hop_index, take first 3
+    events_sorted = sorted(events, key=lambda e: e.get('hop_index', 0))[:3]
+    
+    # Pad if fewer than 3 events
+    while len(events_sorted) < 3:
+        events_sorted.append({})
+    
+    # Build tabular features
+    tab_list = []
+    text_list = []
+    for e in events_sorted:
+        s = pd.Series(e)
+        tab_list.append(build_tabular_vector(s))
+        text_list.append(extract_text_pair(s))
+    
+    # Embed texts
+    with torch.no_grad():
+        embs = embedder.encode(
+            text_list,
+            convert_to_numpy=True,
+            normalize_embeddings=True,
+            show_progress_bar=False,
+        )
+        
+        text_emb = torch.tensor(
+            embs[np.newaxis, :, :],    # (1, 3, 384)
+            dtype=torch.float32
+        ).to(device)
+        
+        tabular = torch.tensor(
+            np.stack(tab_list)[np.newaxis, :, :],  # (1, 3, 12)
+            dtype=torch.float32
+        ).to(device)
+        
+        logit_b, logit_o, logit_t = model(text_emb, tabular)
+        
+        prob_b  = F.softmax(logit_b, dim=1)[0]
+        prob_o  = F.softmax(logit_o, dim=1)[0]
+        prob_t  = F.softmax(logit_t, dim=1)[0]
+        
+        attack_detected   = bool(prob_b.argmax().item() == 1)
+        predicted_outcome = OUTCOME_LABELS[prob_o.argmax().item()]
+        predicted_type    = TYPE_LABELS[prob_t.argmax().item()]
+        confidence        = float(prob_b.max().item())
+    
+    return {
+        "attack_detected":   attack_detected,
+        "predicted_outcome": predicted_outcome,
+        "predicted_type":    predicted_type if attack_detected else None,
+        "confidence":        confidence,
+        "prob_attack":       float(prob_b[1].item()),
+    }
+
 @router.post("/run/live")
 def run_live(req: RunLiveRequest):
     run_id = str(uuid.uuid4())
@@ -63,9 +180,9 @@ def run_live(req: RunLiveRequest):
     
     attack_obj = None
     if req.mode == "attack":
-        if req.attack_type == "direct_prompt_injection":
+        if req.attack_type in ("direct_prompt_injection", "direct_injection"):
             attack_obj = DirectInjectionAttack(objective="unauthorized_action", strength=req.strength)
-        elif req.attack_type == "indirect_prompt_injection":
+        elif req.attack_type in ("indirect_prompt_injection", "indirect_injection"):
             attack_obj = IndirectInjectionAttack(objective="unauthorized_action", strength=req.strength)
         elif req.attack_type == "memory_poisoning":
             attack_obj = MemoryPoisoningAttack(objective="unauthorized_action", strength=req.strength)
@@ -86,11 +203,15 @@ def run_live(req: RunLiveRequest):
         
     with get_db() as conn:
         events = [dict(r) for r in conn.execute("SELECT * FROM events WHERE run_id = ? ORDER BY hop_index ASC", (run_id,)).fetchall()]
+    
+    ml_prediction = _predict_with_deep_model(events)
         
     return {
         "run_id": run_id,
         "outcome": outcome,
-        "events": events
+        "events": events,
+        "ml_prediction": ml_prediction,
+        "injection_type": req.attack_type if req.mode == "attack" else None,
     }
 
 @router.get("/runs")

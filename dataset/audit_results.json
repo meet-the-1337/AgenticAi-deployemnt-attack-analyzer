@@ -1,29 +1,33 @@
 {
-  "drop_run_ids": [
-    "969a217d-3249-47ef-9c86-7d35cdc2f6a7",
-    "99d22eb0-d6bf-42bc-8b5d-b4a66cb6fc32",
-    "e0a006e6-88e7-4374-874d-41116065066f",
-    "c81b677d-7f9e-4403-b085-e15f7a2a4edd",
-    "cd624a44-3622-4cb3-be75-c09ff7df43b6",
-    "0ee6bb34-0ff1-4f2d-b806-5d59df5cd3b9"
-  ],
+  "drop_run_ids": [],
   "drop_columns": [
+    "scenario_id",
     "topology_type",
+    "entry_agent_id",
     "critical_asset_agent_id",
     "total_hops",
     "hops_to_compromise",
     "final_outcome",
-    "detecting_defense"
+    "detecting_defense",
+    "run_status",
+    "defense_catch_binary"
   ],
   "uncertain_run_ids": [
-    "db2f268d-2491-476f-88d9-3c057e2098cb",
-    "42f246ce-da62-424e-b7f0-cd71e15a6c89",
-    "0cbca2c6-56cf-458d-9018-e45acefbe721",
-    "238578c9-3e72-4989-9b65-814d37ca45f0",
-    "70038537-b147-4c5c-9fc8-99ebbef44b48",
-    "ab938cbe-a58c-4b8b-a6f8-6d1a050b7b21",
-    "08512910-6c2f-42d8-a39f-804ef87ac0e3",
-    "0d4d9c0d-d341-4fbc-a45c-a7395ec6a3dc",
-    "a3681545-7985-4eab-a7f9-e6a5246d56a2"
+    "24412d0f-bd5c-45d3-85fa-57875b23b1cd",
+    "03e49bdb-9e3f-44c8-a6d7-6fe669c071d0",
+    "56dcb96f-7cca-4042-9db5-331aea3710df",
+    "20836969-cb49-43b7-a0f1-1e73244bc16d",
+    "6a3b0b19-1412-42fe-86c5-cc4592004b0e",
+    "9fadcb0a-cc87-491e-a862-f62cb4574597",
+    "c41558fa-6cbe-41ea-8496-c59b50dc39cd",
+    "9123e6e5-d6f5-4b71-9b63-dd16cef5c9f7",
+    "f4f56b5c-c1d8-47ce-9c1a-b0c0ebfb6276",
+    "31a93d8b-1055-4007-9254-f0ab7bf2a31c",
+    "5cefd7c0-3b73-49c1-a5c0-3184cd6c795e",
+    "bc24521d-3eeb-46e3-9eb2-ebe1d19dd072",
+    "afe44c83-b41b-43b9-b807-e7c700dcea0f",
+    "d19ebbfd-454e-4ac0-9cdd-36bf09988a86",
+    "7a5b2ad4-296f-4eb3-ae18-811361d38ced",
+    "c65201ed-a075-4b74-9eee-2af288766ce2"
   ]
 }

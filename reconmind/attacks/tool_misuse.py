@@ -29,16 +29,17 @@ class ToolMisuseAttack(Attack):
             self.payloads = json.load(f)
 
     def _get_payload(self) -> str:
+        import random
         obj_payloads = self.payloads.get("tool_misuse", {}).get(self.config.objective, {})
-        payload = obj_payloads.get(self.config.strength)
-        if not payload:
+        payload_options = obj_payloads.get(self.config.strength, [])
+        if not payload_options:
             raise ValueError(f"No payload found for tool_misuse {self.config.objective}/{self.config.strength}")
-        return payload
+        return random.choice(payload_options)
 
     def inject(self, initial_state: GraphState) -> GraphState:
         payload = self._get_payload()
         new_state = initial_state.copy()
-        new_state["current_input"] = payload
+        new_state["current_input"] = f"{initial_state['current_input']}\n\n{payload}"
         return new_state
 
     def expected_signal(self) -> Dict[str, Any]:

@@ -10,7 +10,33 @@ const ROLE_TO_ID = {
 // Map hop_index to node id
 const HOP_TO_NODE = { 0: 'intake', 1: 'retrieval', 2: 'action' };
 
-export default function AgentFlowGraph({ events = [], outcome = '', activeHop = -1 }) {
+const getEdgeLabel = (source, target, events) => {
+  if (!events || events.length === 0) return '';
+  
+  if (source === 'user' && target === 'intake') {
+    // Show the original user input — from first event's input
+    const first = events[0];
+    const text = first?.input_prompt_text || '';
+    return text.length > 50 ? text.substring(0, 47) + '...' : text;
+  }
+  if (source === 'intake' && target === 'retrieval') {
+    const e = events.find(ev => 
+      (ev.agent_role || '').includes('intake'));
+    const text = e?.output_text || '';
+    return text.length > 50 ? text.substring(0, 47) + '...' : text;
+  }
+  if (source === 'retrieval' && target === 'action') {
+    return 'Context + KB results →';
+  }
+  if (source === 'memory' && target === 'action') {
+    const hasPoison = events.some(e => 
+      (e.memory_ops_summary || '').includes('agent_instructions'));
+    return hasPoison ? '⚠️ Poisoned memory read' : 'Memory context';
+  }
+  return '';
+};
+
+export default function AgentFlowGraph({ events = [], outcome = '', mlPrediction = null, activeHop = -1 }) {
   
   // Compute node status per node
   const nodeStatus = {
@@ -67,26 +93,6 @@ export default function AgentFlowGraph({ events = [], outcome = '', activeHop = 
     memory_hit:{ background:'#7f1d1d', border:'2px solid #ef4444', color:'#fca5a5' },
   };
   
-  // Build edge labels from actual event data
-  const getEdgeLabel = (source, target) => {
-    if (source === 'user' && target === 'intake') {
-      return events[0]?.input_prompt_text?.substring(0, 45) + '...' || '';
-    }
-    if (source === 'intake' && target === 'retrieval') {
-      const e = events.find(e => ROLE_TO_ID[e.agent_role] === 'intake');
-      return e?.output_text?.substring(0, 45) + '...' || '';
-    }
-    if (source === 'retrieval' && target === 'action') {
-      return 'KB results + customer context';
-    }
-    if (source === 'memory' && target === 'action') {
-      const e = events.find(e => 
-        (e.memory_ops_summary || '').includes('agent_instructions'));
-      return e ? '⚠️ Poisoned instructions read' : 'Memory context';
-    }
-    return '';
-  };
-  
   // Only show edge label if source node is complete
   const isNodeComplete = (id) => 
     !['pending','executing'].includes(nodeStatus[id]);
@@ -123,19 +129,19 @@ export default function AgentFlowGraph({ events = [], outcome = '', activeHop = 
   
   const edges = [
     { id:'u-i', source:'user', target:'intake', animated: isNodeComplete('user'),
-      label: isNodeComplete('user') ? getEdgeLabel('user','intake') : '',
+      label: (isNodeComplete('user') ? getEdgeLabel('user', 'intake', events) : '') || '',
       labelStyle: { fontSize: 11, fill: '#94a3b8', fontWeight: 500 },
       labelBgStyle: { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 },
       labelBgPadding: [6, 4],
       style: { stroke: isNodeComplete('user') ? '#3b82f6' : '#475569', strokeWidth: 2 }},
     { id:'i-r', source:'intake', target:'retrieval', animated: isNodeComplete('intake'),
-      label: isNodeComplete('intake') ? getEdgeLabel('intake','retrieval') : '',
+      label: (isNodeComplete('intake') ? getEdgeLabel('intake', 'retrieval', events) : '') || '',
       labelStyle: { fontSize: 11, fill: '#94a3b8', fontWeight: 500 },
       labelBgStyle: { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 },
       labelBgPadding: [6, 4],
       style: { stroke: isNodeComplete('intake') ? '#3b82f6' : '#475569', strokeWidth: 2 }},
     { id:'r-a', source:'retrieval', target:'action', animated: isNodeComplete('retrieval'),
-      label: isNodeComplete('retrieval') ? getEdgeLabel('retrieval','action') : '',
+      label: (isNodeComplete('retrieval') ? getEdgeLabel('retrieval', 'action', events) : '') || '',
       labelStyle: { fontSize: 11, fill: '#94a3b8', fontWeight: 500 },
       labelBgStyle: { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 },
       labelBgPadding: [6, 4],
@@ -143,7 +149,7 @@ export default function AgentFlowGraph({ events = [], outcome = '', activeHop = 
     { id:'r-m', source:'retrieval', target:'memory', animated: false,
       style: { stroke: '#475569', strokeDasharray: '4', strokeWidth: 1.5 }},
     { id:'m-a', source:'memory', target:'action', animated: isNodeComplete('memory'),
-      label: isNodeComplete('memory') ? getEdgeLabel('memory','action') : '',
+      label: (isNodeComplete('memory') ? getEdgeLabel('memory', 'action', events) : '') || '',
       labelStyle: { fontSize: 11, fill: '#f87171', fontWeight: 600 },
       labelBgStyle: { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 },
       labelBgPadding: [6, 4],
@@ -181,6 +187,33 @@ export default function AgentFlowGraph({ events = [], outcome = '', activeHop = 
           <Background color="#1c2333" gap={24} size={1.5} />
         </ReactFlow>
       </div>
+      
+      {/* ML prediction display below graph */}
+      {mlPrediction && (
+        <div className="px-5 py-3 border-t border-[#30363d] 
+                        bg-purple-950/20 flex items-center gap-4 flex-wrap">
+          <span className="text-xs font-semibold text-purple-400 uppercase tracking-wide">
+            🤖 ML Prediction
+          </span>
+          <span className={`text-xs px-2 py-1 rounded-full border ${
+            mlPrediction.attack_detected
+              ? 'bg-red-500/20 text-red-400 border-red-500/30'
+              : 'bg-green-500/20 text-green-400 border-green-500/30'
+          }`}>
+            {mlPrediction.attack_detected ? '⚡ Attack' : '✓ Clean'}
+          </span>
+          {mlPrediction.predicted_type && (
+            <span className="text-xs px-2 py-1 rounded-full border
+                             bg-purple-500/20 text-purple-300 
+                             border-purple-500/30">
+              {mlPrediction.predicted_type.replace(/_/g,' ')}
+            </span>
+          )}
+          <span className="text-xs text-gray-500 ml-auto">
+            Confidence: {((mlPrediction.confidence || 0) * 100).toFixed(0)}%
+          </span>
+        </div>
+      )}
       
       {/* Attack path summary below graph */}
       {outcome && outcome !== '' && (

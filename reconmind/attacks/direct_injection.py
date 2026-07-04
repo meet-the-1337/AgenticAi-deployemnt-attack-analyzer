@@ -29,11 +29,13 @@ class DirectInjectionAttack(Attack):
             self.payloads = json.load(f)
 
     def _get_payload(self) -> str:
-        obj_payloads = self.payloads.get(self.config.objective, {})
-        payload = obj_payloads.get(self.config.strength)
-        if not payload:
-            raise ValueError(f"No payload found for objective '{self.config.objective}' and strength '{self.config.strength}'")
-        return payload
+        import random
+        # Structure: direct_injection -> objective -> strength -> list
+        obj_payloads = self.payloads.get("direct_injection", {}).get(self.config.objective, {})
+        payload_options = obj_payloads.get(self.config.strength, [])
+        if not payload_options:
+            raise ValueError(f"No payloads found for objective '{self.config.objective}' and strength '{self.config.strength}'")
+        return random.choice(payload_options)
 
     def inject(self, initial_state: GraphState) -> GraphState:
         payload = self._get_payload()

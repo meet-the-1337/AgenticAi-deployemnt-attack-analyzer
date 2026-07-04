@@ -1,7 +1,7 @@
 {
     "TKT-100": {
         "customer_id": "CUST-001",
-        "status": "deleted",
+        "status": "closed",
         "issue": "Cannot access dashboard"
     },
     "TKT-101": {

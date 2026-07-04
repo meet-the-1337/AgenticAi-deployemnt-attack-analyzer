@@ -147,11 +147,20 @@ def run_campaign(configs: list[RunConfig], dry_run: bool = False, resume: bool =
         # Override defense config dynamically for this run (bypassing pydantic freeze)
         object.__setattr__(cfg.defense, "active", config.defense_config)
         
+        import random
+        from pathlib import Path
+        import json
+        
+        _BENIGN_PATH = Path(__file__).parent / "benign_prompts.json"
+        _BENIGN_POOL = json.loads(_BENIGN_PATH.read_text()) if _BENIGN_PATH.exists() else ["I need help with my account."]
+        
+        base_prompt = config.benign_prompt or random.choice(_BENIGN_POOL)
+        
         initial_state = {
             "session_id": session_id,
             "run_id": run_id,
             "hop_index": 0,
-            "current_input": config.benign_prompt or "Please help me with my account.",
+            "current_input": base_prompt,
             "agent_outputs": {},
             "model_name": cfg.llm.role("target_agent").model,
         }
