@@ -37,3 +37,6 @@ dist/
 *.db-shm
 *.db-wal
 
+# Model artifacts
+models/deep/*.pt
+models/deep/*.npy
