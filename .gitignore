@@ -40,3 +40,4 @@ dist/
 # Model artifacts
 models/deep/*.pt
 models/deep/*.npy
+.~lock.*

@@ -1,8 +1,8 @@
 {
-  "export_date": "2026-07-04T09:47:40.835216+00:00",
-  "total_runs": 510,
-  "total_events": 1530,
-  "attack_runs": 360,
-  "successful_attacks": 249,
-  "success_rate": 0.69
+  "export_date": "2026-07-05T19:06:19.735229+00:00",
+  "total_runs": 533,
+  "total_events": 1599,
+  "attack_runs": 365,
+  "successful_attacks": 184,
+  "success_rate": 0.5
 }
