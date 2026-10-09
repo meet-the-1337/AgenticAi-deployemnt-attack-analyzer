@@ -1,0 +1,459 @@
+{
+  "$defs": {
+    "ChatAssistantMessage": {
+      "description": "Message from the assistant in the chat.",
+      "properties": {
+        "role": {
+          "const": "assistant",
+          "title": "Role",
+          "type": "string"
+        },
+        "content": {
+          "anyOf": [
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/TextContentBlock"
+                  },
+                  {
+                    "$ref": "#/$defs/ThinkingContentBlock"
+                  },
+                  {
+                    "$ref": "#/$defs/RedactedThinkingContentBlock"
+                  }
+                ]
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Content"
+        },
+        "tool_calls": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/FunctionCall"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Tool Calls"
+        }
+      },
+      "required": [
+        "role",
+        "content",
+        "tool_calls"
+      ],
+      "title": "ChatAssistantMessage",
+      "type": "object"
+    },
+    "ChatSystemMessage": {
+      "description": "System message in the chat. This can be set by using the\n[SystemMessage][agentdojo.agent_pipeline.SystemMessage] pipeline element in a pipeline.",
+      "properties": {
+        "role": {
+          "const": "system",
+          "title": "Role",
+          "type": "string"
+        },
+        "content": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/TextContentBlock"
+              },
+              {
+                "$ref": "#/$defs/ThinkingContentBlock"
+              },
+              {
+                "$ref": "#/$defs/RedactedThinkingContentBlock"
+              }
+            ]
+          },
+          "title": "Content",
+          "type": "array"
+        }
+      },
+      "required": [
+        "role",
+        "content"
+      ],
+      "title": "ChatSystemMessage",
+      "type": "object"
+    },
+    "ChatToolResultMessage": {
+      "description": "Message from the tool with the result of a function call.",
+      "properties": {
+        "tool_call": {
+          "$ref": "#/$defs/FunctionCall"
+        },
+        "content": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/TextContentBlock"
+              },
+              {
+                "$ref": "#/$defs/ThinkingContentBlock"
+              },
+              {
+                "$ref": "#/$defs/RedactedThinkingContentBlock"
+              }
+            ]
+          },
+          "title": "Content",
+          "type": "array"
+        },
+        "role": {
+          "const": "tool",
+          "title": "Role",
+          "type": "string"
+        },
+        "tool_call_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Tool Call Id"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Error"
+        }
+      },
+      "required": [
+        "tool_call",
+        "content",
+        "role",
+        "tool_call_id",
+        "error"
+      ],
+      "title": "ChatToolResultMessage",
+      "type": "object"
+    },
+    "ChatUserMessage": {
+      "description": "Message from the user in the chat.",
+      "properties": {
+        "role": {
+          "const": "user",
+          "title": "Role",
+          "type": "string"
+        },
+        "content": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/TextContentBlock"
+              },
+              {
+                "$ref": "#/$defs/ThinkingContentBlock"
+              },
+              {
+                "$ref": "#/$defs/RedactedThinkingContentBlock"
+              }
+            ]
+          },
+          "title": "Content",
+          "type": "array"
+        }
+      },
+      "required": [
+        "role",
+        "content"
+      ],
+      "title": "ChatUserMessage",
+      "type": "object"
+    },
+    "FunctionCall": {
+      "description": "An object containing information about a function call requested by an agent.",
+      "properties": {
+        "function": {
+          "title": "Function",
+          "type": "string"
+        },
+        "args": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "$ref": "#/$defs/FunctionCall"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Args",
+          "type": "object"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Id"
+        },
+        "placeholder_args": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  {
+                    "items": {},
+                    "type": "array"
+                  },
+                  {
+                    "$ref": "#/$defs/FunctionCall"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Placeholder Args"
+        }
+      },
+      "required": [
+        "function",
+        "args"
+      ],
+      "title": "FunctionCall",
+      "type": "object"
+    },
+    "RedactedThinkingContentBlock": {
+      "properties": {
+        "type": {
+          "const": "redacted_thinking",
+          "title": "Type",
+          "type": "string"
+        },
+        "content": {
+          "title": "Content",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "content"
+      ],
+      "title": "RedactedThinkingContentBlock",
+      "type": "object"
+    },
+    "TextContentBlock": {
+      "properties": {
+        "type": {
+          "const": "text",
+          "title": "Type",
+          "type": "string"
+        },
+        "content": {
+          "title": "Content",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "content"
+      ],
+      "title": "TextContentBlock",
+      "type": "object"
+    },
+    "ThinkingContentBlock": {
+      "properties": {
+        "type": {
+          "const": "thinking",
+          "title": "Type",
+          "type": "string"
+        },
+        "content": {
+          "title": "Content",
+          "type": "string"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Id"
+        }
+      },
+      "required": [
+        "type",
+        "content",
+        "id"
+      ],
+      "title": "ThinkingContentBlock",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "suite_name": {
+      "title": "Suite Name",
+      "type": "string"
+    },
+    "pipeline_name": {
+      "title": "Pipeline Name",
+      "type": "string"
+    },
+    "user_task_id": {
+      "title": "User Task Id",
+      "type": "string"
+    },
+    "injection_task_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Injection Task Id"
+    },
+    "attack_type": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Attack Type"
+    },
+    "injections": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Injections",
+      "type": "object"
+    },
+    "messages": {
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/ChatUserMessage"
+          },
+          {
+            "$ref": "#/$defs/ChatAssistantMessage"
+          },
+          {
+            "$ref": "#/$defs/ChatToolResultMessage"
+          },
+          {
+            "$ref": "#/$defs/ChatSystemMessage"
+          }
+        ]
+      },
+      "title": "Messages",
+      "type": "array"
+    },
+    "error": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Error"
+    },
+    "utility": {
+      "title": "Utility",
+      "type": "boolean"
+    },
+    "security": {
+      "title": "Security",
+      "type": "boolean"
+    },
+    "duration": {
+      "title": "Duration",
+      "type": "number"
+    }
+  },
+  "required": [
+    "suite_name",
+    "pipeline_name",
+    "user_task_id",
+    "injection_task_id",
+    "attack_type",
+    "injections",
+    "messages",
+    "error",
+    "utility",
+    "security",
+    "duration"
+  ],
+  "title": "TaskResults",
+  "type": "object"
+}

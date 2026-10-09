@@ -1,0 +1,33 @@
+{
+  "drop_run_ids": [],
+  "drop_columns": [
+    "scenario_id",
+    "topology_type",
+    "entry_agent_id",
+    "critical_asset_agent_id",
+    "total_hops",
+    "hops_to_compromise",
+    "final_outcome",
+    "detecting_defense",
+    "run_status",
+    "defense_catch_binary"
+  ],
+  "uncertain_run_ids": [
+    "24412d0f-bd5c-45d3-85fa-57875b23b1cd",
+    "03e49bdb-9e3f-44c8-a6d7-6fe669c071d0",
+    "56dcb96f-7cca-4042-9db5-331aea3710df",
+    "20836969-cb49-43b7-a0f1-1e73244bc16d",
+    "6a3b0b19-1412-42fe-86c5-cc4592004b0e",
+    "9fadcb0a-cc87-491e-a862-f62cb4574597",
+    "c41558fa-6cbe-41ea-8496-c59b50dc39cd",
+    "9123e6e5-d6f5-4b71-9b63-dd16cef5c9f7",
+    "f4f56b5c-c1d8-47ce-9c1a-b0c0ebfb6276",
+    "31a93d8b-1055-4007-9254-f0ab7bf2a31c",
+    "5cefd7c0-3b73-49c1-a5c0-3184cd6c795e",
+    "bc24521d-3eeb-46e3-9eb2-ebe1d19dd072",
+    "afe44c83-b41b-43b9-b807-e7c700dcea0f",
+    "d19ebbfd-454e-4ac0-9cdd-36bf09988a86",
+    "7a5b2ad4-296f-4eb3-ae18-811361d38ced",
+    "c65201ed-a075-4b74-9eee-2af288766ce2"
+  ]
+}

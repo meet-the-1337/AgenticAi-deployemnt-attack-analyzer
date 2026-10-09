@@ -1,0 +1,32 @@
+==================================================
+ ReconMind Dataset Generation (Local GPU)
+ Target Suites: workspace, banking, travel, slack
+ Attacks: direct important_instructions dos injecagent
+==================================================
+sudo: a terminal is required to read the password; either use the -S option to read from standard input or configure an askpass helper
+sudo: a password is required
+Starting run for attack: 'direct' -> data/agentdojo_runs_local/direct
+  [!] HANG DETECTED for 'direct' (180s no progress at 280 traces).
+  [!] Skipping 'direct' for now. Added to retry queue.
+./run_local_agentdojo.sh: line 1: 281504 Killed                     $VENV $BENCHMARK $SUITES --attack "${attack}" $MODEL_FLAGS --logdir "${logdir}" >> "${logdir}/run.log" 2>&1
+Starting run for attack: 'important_instructions' -> data/agentdojo_runs_local/important_instructions
+  [!] HANG DETECTED for 'important_instructions' (180s no progress at 335 traces).
+./run_local_agentdojo.sh: line 35: 316898 Killed                     pkill -9 -f "agentdojo.scripts.benchmark" 2> /dev/null
+  [!] Skipping 'important_instructions' for now. Added to retry queue.
+./run_local_agentdojo.sh: line 1: 294127 Killed                     $VENV $BENCHMARK $SUITES --attack "${attack}" $MODEL_FLAGS --logdir "${logdir}" >> "${logdir}/run.log" 2>&1
+Starting run for attack: 'dos' -> data/agentdojo_runs_local/dos
+  [!] HANG DETECTED for 'dos' (180s no progress at 90 traces).
+  [!] Skipping 'dos' for now. Added to retry queue.
+./run_local_agentdojo.sh: line 1: 316908 Killed                     $VEN  [!] Skipping 'dos' for now. Added to retry queue.
+./run_local_agentdojo.sh: line 1: 316907 Killed                     $VENV $BENCHMARK $SUITES --attack "${attack}" $MODEL_FLAGS --l  [!] HANG DETECTED for 'injecagent' (180s no progress at 316 traces).
+./run_local_agentdojo.sh: line 35: 343457 Killed                     pkill -9 -f "agentdojo.scripts.benchmark" 2> /dev/null
+  [!] Skipping 'injecagent' for now. Added to retry queue.
+./run_local_agentdojo.sh: line 1: 324350 Killed                     $VENV $BENCHMARK $SUITES --attack "${attack}" $MODEL_FLAGS --logdir "${logdir}" >> "${logdir}/run.log" 2>&1
+==================================================
+ Retrying stopped attacks: direct important_instructions dos injecagent
+==================================================
+Starting run for attack: 'direct' -> data/agentdojo_runs_local/direct
+  [!] HANG DETECTED for 'direct' (180s no progress at 307 traces).
+  [!] Attack 'direct' stopped again on retry. Moving on.
+Starting run for attack: 'important_instructions' -> data/agentdojo_runs_local/important_instructions
+./run_local_agentdojo.sh: line 47: 343467 Killed                     $VENV $BENCHMARK $SUITES --attack "${attack}" $MODEL_FL./run_local_agentdojo.sh: line 47: 343468 Killed                     $VENV $BENCHMARK $SUITES --attack "${attack}" $MODEL_FLAGS --logdir "${logdir}" >> "${logdir}/run.log" 2>&1

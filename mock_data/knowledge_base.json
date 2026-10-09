@@ -1,0 +1,22 @@
+{
+    "KB-001": {
+        "title": "Resetting your password",
+        "content": "To reset your password, click the 'Forgot Password' link on the login page. An email with a reset link will be sent to your registered email address."
+    },
+    "KB-002": {
+        "title": "Contacting support",
+        "content": "You can reach out to our support team via email at support@example.com or by calling 1-800-555-0199 during business hours."
+    },
+    "KB-003": {
+        "title": "Upgrading to Premium",
+        "content": "To upgrade your account tier to Premium, navigate to the Billing section of your dashboard and select 'Upgrade Plan'."
+    },
+    "KB-004": {
+        "title": "Data Privacy Policy",
+        "content": "We do not share your customer data with third parties. All database records are strictly confidential and encrypted at rest."
+    },
+    "KB-005": {
+        "title": "System Alerts and Status",
+        "content": "Check the system status page for ongoing outages. If you suspect a security issue, escalate to admin immediately."
+    }
+}

@@ -1,0 +1,144 @@
+{
+  "data_source": "agentdojo_only",
+  "test_metrics": {
+    "binary_f1": 0.3448275862068966,
+    "binary_roc_auc": 0.7175,
+    "outcome_macro_f1": 0.10368663594470046,
+    "type_macro_f1": 0.628978864272982,
+    "type_confusion": [
+      [
+        4,
+        0,
+        0
+      ],
+      [
+        1,
+        4,
+        0
+      ],
+      [
+        2,
+        5,
+        5
+      ]
+    ]
+  },
+  "training_history": [
+    {
+      "epoch": 5,
+      "loss": 3.3797525564829507,
+      "sigma_binary": 0.9973824620246887,
+      "sigma_outcome": 1.0024163722991943,
+      "sigma_type": 1.0024259090423584,
+      "binary_f1": 0.23529411764705882,
+      "binary_roc_auc": 0.5480769230769231,
+      "outcome_macro_f1": 0.016129032258064516,
+      "type_macro_f1": 0.15384615384615385
+    },
+    {
+      "epoch": 10,
+      "loss": 2.591253320376078,
+      "sigma_binary": 0.9919990301132202,
+      "sigma_outcome": 1.004799485206604,
+      "sigma_type": 1.0040512084960938,
+      "binary_f1": 0.23529411764705882,
+      "binary_roc_auc": 0.548076923076923,
+      "outcome_macro_f1": 0.05357142857142857,
+      "type_macro_f1": 0.2619047619047619
+    },
+    {
+      "epoch": 15,
+      "loss": 2.364006002744039,
+      "sigma_binary": 0.9876598715782166,
+      "sigma_outcome": 1.0068830251693726,
+      "sigma_type": 1.0036064386367798,
+      "binary_f1": 0.23529411764705882,
+      "binary_roc_auc": 0.548076923076923,
+      "outcome_macro_f1": 0.04838709677419355,
+      "type_macro_f1": 0.4222222222222222
+    },
+    {
+      "epoch": 20,
+      "loss": 2.310137232144674,
+      "sigma_binary": 0.9842588305473328,
+      "sigma_outcome": 1.0080429315567017,
+      "sigma_type": 1.0024795532226562,
+      "binary_f1": 0.23529411764705882,
+      "binary_roc_auc": 0.5865384615384615,
+      "outcome_macro_f1": 0.05357142857142857,
+      "type_macro_f1": 0.24338624338624337
+    },
+    {
+      "epoch": 25,
+      "loss": 2.009930511315664,
+      "sigma_binary": 0.9820255041122437,
+      "sigma_outcome": 1.0082858800888062,
+      "sigma_type": 1.000897765159607,
+      "binary_f1": 0.24242424242424243,
+      "binary_roc_auc": 0.5865384615384615,
+      "outcome_macro_f1": 0.11228070175438595,
+      "type_macro_f1": 0.4222222222222222
+    },
+    {
+      "epoch": 30,
+      "loss": 1.750274618466695,
+      "sigma_binary": 0.9807527661323547,
+      "sigma_outcome": 1.0080180168151855,
+      "sigma_type": 0.9996632933616638,
+      "binary_f1": 0.24242424242424243,
+      "binary_roc_auc": 0.6057692307692307,
+      "outcome_macro_f1": 0.12777777777777777,
+      "type_macro_f1": 0.6
+    },
+    {
+      "epoch": 35,
+      "loss": 1.5877248644828796,
+      "sigma_binary": 0.9802491664886475,
+      "sigma_outcome": 1.00767982006073,
+      "sigma_type": 0.9991331100463867,
+      "binary_f1": 0.25,
+      "binary_roc_auc": 0.644230769230769,
+      "outcome_macro_f1": 0.1488095238095238,
+      "type_macro_f1": 0.5090909090909091
+    },
+    {
+      "epoch": 40,
+      "loss": 1.9053516785303752,
+      "sigma_binary": 0.980176568031311,
+      "sigma_outcome": 1.007627010345459,
+      "sigma_type": 0.9990561008453369,
+      "binary_f1": 0.25,
+      "binary_roc_auc": 0.644230769230769,
+      "outcome_macro_f1": 0.1488095238095238,
+      "type_macro_f1": 0.5090909090909091
+    }
+  ],
+  "config": {
+    "dataset_dir": "dataset",
+    "output_dir": "models/agentdojo",
+    "text_model": "all-MiniLM-L6-v2",
+    "text_dim": "384",
+    "tabular_hidden": "128",
+    "lstm_hidden": "256",
+    "lstm_layers": "2",
+    "dropout": "0.3",
+    "batch_size": "32",
+    "epochs": "40",
+    "lr": "0.0003",
+    "weight_decay": "0.0001",
+    "grad_clip": "1.0",
+    "loss_weight_binary": "1.0",
+    "loss_weight_outcome": "1.0",
+    "loss_weight_type": "0.8",
+    "device": "cuda",
+    "num_workers": "4",
+    "pin_memory": "True",
+    "seed": "42"
+  },
+  "dataset_info": {
+    "total_samples": 250,
+    "train": 170,
+    "val": 30,
+    "test": 50
+  }
+}

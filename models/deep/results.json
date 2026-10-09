@@ -1,0 +1,96 @@
+{
+  "test_metrics": {
+    "binary_f1": 0.953125,
+    "binary_roc_auc": 0.9962686567164178,
+    "outcome_macro_f1": 0.6681897687450494,
+    "type_macro_f1": 0.2387730236090892,
+    "type_confusion": [
+      [
+        4,
+        0,
+        14,
+        4
+      ],
+      [
+        4,
+        0,
+        7,
+        7
+      ],
+      [
+        2,
+        0,
+        16,
+        1
+      ],
+      [
+        5,
+        0,
+        5,
+        3
+      ]
+    ]
+  },
+  "training_history": [
+    {
+      "epoch": 5,
+      "loss": 2.419793277978897,
+      "binary_f1": 0.9787234042553191,
+      "binary_roc_auc": 0.9954233409610984,
+      "outcome_macro_f1": 0.5680417259364628,
+      "type_macro_f1": 0.12096774193548387
+    },
+    {
+      "epoch": 10,
+      "loss": 1.874237487713496,
+      "binary_f1": 0.9782608695652174,
+      "binary_roc_auc": 0.9954233409610984,
+      "outcome_macro_f1": 0.6421923352983397,
+      "type_macro_f1": 0.16865079365079366
+    },
+    {
+      "epoch": 15,
+      "loss": 1.7273152271906536,
+      "binary_f1": 0.9782608695652174,
+      "binary_roc_auc": 0.9954233409610984,
+      "outcome_macro_f1": 0.6709176788124157,
+      "type_macro_f1": 0.17748917748917747
+    },
+    {
+      "epoch": 20,
+      "loss": 1.7300203343232472,
+      "binary_f1": 0.9782608695652174,
+      "binary_roc_auc": 0.9954233409610984,
+      "outcome_macro_f1": 0.6852588902186719,
+      "type_macro_f1": 0.21954261954261955
+    }
+  ],
+  "config": {
+    "dataset_dir": "dataset/merged",
+    "output_dir": "models/deep",
+    "text_model": "all-MiniLM-L6-v2",
+    "text_dim": "384",
+    "tabular_hidden": "128",
+    "lstm_hidden": "256",
+    "lstm_layers": "2",
+    "dropout": "0.3",
+    "batch_size": "32",
+    "epochs": "20",
+    "lr": "0.0003",
+    "weight_decay": "0.0001",
+    "grad_clip": "1.0",
+    "loss_weight_binary": "1.0",
+    "loss_weight_outcome": "1.0",
+    "loss_weight_type": "0.8",
+    "device": "cuda",
+    "num_workers": "4",
+    "pin_memory": "True",
+    "seed": "42"
+  },
+  "dataset_info": {
+    "total_samples": 535,
+    "train": 363,
+    "val": 65,
+    "test": 107
+  }
+}

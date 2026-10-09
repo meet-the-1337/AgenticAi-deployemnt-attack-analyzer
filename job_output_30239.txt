@@ -1,0 +1,63 @@
+====================================
+Job ID        : 30239
+Start Time    : 2026-07-15 16:05:33
+====================================
+>>> [1/4] Setting up Python Environment...
+==========================================
+ ReconMind: Cloud GPU Environment Setup
+==========================================
+[1/4] Creating Python virtual environment...
+[2/4] Upgrading pip and installing requirements...
+Collecting pip
+  Using cached pip-25.0.1-py3-none-any.whl.metadata (3.7 kB)
+Using cached pip-25.0.1-py3-none-any.whl (1.8 MB)
+Installing collected packages: pip
+  Attempting uninstall: pip
+    Found existing installation: pip 24.0
+    Uninstalling pip-24.0:
+      Successfully uninstalled pip-24.0
+Successfully installed pip-25.0.1
+Obtaining reconmind from git+https://github.com/meet-the-1337/AgenticAi-deployemnt-attack-analyzer@b298a5660ca67bcf9aeea817904e5cc84245a03f#egg=reconmind (from -r requirements.txt (line 91))
+  Cloning https://github.com/meet-the-1337/AgenticAi-deployemnt-attack-analyzer (to revision b298a5660ca67bcf9aeea817904e5cc84245a03f) to ./.venv/src/reconmind
+  Resolved https://github.com/meet-the-1337/AgenticAi-deployemnt-attack-analyzer to commit b298a5660ca67bcf9aeea817904e5cc84245a03f
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+
+The conflict is caused by:
+    The user requested aiohappyeyeballs==2.6.2
+    The user requested (constraint) aiohappyeyeballs==2.6.1
+
+To fix this you could try to:
+1. loosen the range of package versions you've specified
+2. remove package versions to allow pip to attempt to solve the dependency conflict
+
+>>> [2/4] Downloading and Starting standalone Ollama (No Root)...
+>>> [3/4] Pulling Model Weights...
+>>> [4/4] Running Dataset Generation...
+==================================================
+ ReconMind Full Dataset Generation (Cloud GPU)
+ Target Suites: workspace, banking, travel, slack
+ Attacks: direct important_instructions dos injecagent
+==================================================
+Starting full run for attack: 'direct' -> data/agentdojo_runs_full/direct
+  → Completed attack 'direct'. Total traces: 0
+Starting full run for attack: 'important_instructions' -> data/agentdojo_runs_full/important_instructions
+  → Completed attack 'important_instructions'. Total traces: 0
+Starting full run for attack: 'dos' -> data/agentdojo_runs_full/dos
+  → Completed attack 'dos'. Total traces: 0
+Starting full run for attack: 'injecagent' -> data/agentdojo_runs_full/injecagent
+  → Completed attack 'injecagent'. Total traces: 0
+==================================================
+ Generation complete! Total JSON traces: 0
+ Now run: .venv/bin/python scripts/extract_agentdojo.py --logdir data/agentdojo_runs_full --out-dir dataset --prefix agentdojo_full
+==================================================
+>>> [5/4] Extracting CSV Results...
+====================================
+End Time      : 2026-07-15 16:08:22
+====================================

@@ -1,0 +1,54 @@
+# Generated artifacts — never commit these
+data/reconmind.db
+data/*.db
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE / OS noise
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# Secrets — NEVER commit keys
+.env
+*.env
+
+# Node dependencies & builds
+node_modules/
+frontend/node_modules/
+dist/
+
+# Egg info
+*.egg-info/
+
+# Databases
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# Model artifacts (large binary files)
+models/**/*.pt
+models/**/*.npy
+models/**/*.joblib
+
+# Lock files
+.~lock.*
+
+# Large binaries — NEVER commit
+ollama
+ollama.tgz
+*.tar.gz
+
+# Other local scratch files
+OTHER-FILES/

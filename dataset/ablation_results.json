@@ -1,0 +1,250 @@
+[
+  {
+    "round": 1,
+    "label": "True Baseline",
+    "change": "scenario_id grouping (fixed). No other changes.",
+    "n_seeds": 5,
+    "bin_f1_mean": 0.9616,
+    "bin_f1_std": 0.0041,
+    "roc_auc_mean": 0.9296,
+    "roc_auc_std": 0.0169,
+    "pr_auc_mean": 0.9841,
+    "pr_auc_std": 0.0084,
+    "type_f1_mean": 0.3928,
+    "type_f1_std": 0.1053,
+    "threshold_mean": 0.062,
+    "per_seed": [
+      {
+        "threshold": 0.01,
+        "bin_f1": 0.9581,
+        "roc_auc": 0.9167,
+        "pr_auc": 0.9803,
+        "type_f1": 0.4463,
+        "seed": 42,
+        "elapsed_s": 7.0
+      },
+      {
+        "threshold": 0.24,
+        "bin_f1": 0.9604,
+        "roc_auc": 0.9196,
+        "pr_auc": 0.9913,
+        "type_f1": 0.2663,
+        "seed": 123,
+        "elapsed_s": 6.1
+      },
+      {
+        "threshold": 0.01,
+        "bin_f1": 0.9691,
+        "roc_auc": 0.9233,
+        "pr_auc": 0.975,
+        "type_f1": 0.4846,
+        "seed": 7,
+        "elapsed_s": 6.2
+      },
+      {
+        "threshold": 0.01,
+        "bin_f1": 0.9581,
+        "roc_auc": 0.9628,
+        "pr_auc": 0.9967,
+        "type_f1": 0.2651,
+        "seed": 99,
+        "elapsed_s": 6.2
+      },
+      {
+        "threshold": 0.04,
+        "bin_f1": 0.9621,
+        "roc_auc": 0.9257,
+        "pr_auc": 0.9771,
+        "type_f1": 0.5018,
+        "seed": 2024,
+        "elapsed_s": 8.5
+      }
+    ]
+  },
+  {
+    "round": 2,
+    "label": "Balanced Loss",
+    "change": "Round 1 + inverse-freq CrossEntropyLoss weight on binary head.",
+    "n_seeds": 5,
+    "bin_f1_mean": 0.9662,
+    "bin_f1_std": 0.0037,
+    "roc_auc_mean": 0.935,
+    "roc_auc_std": 0.0241,
+    "pr_auc_mean": 0.9866,
+    "pr_auc_std": 0.0076,
+    "type_f1_mean": 0.4864,
+    "type_f1_std": 0.0246,
+    "threshold_mean": 0.012,
+    "per_seed": [
+      {
+        "threshold": 0.01,
+        "bin_f1": 0.9612,
+        "roc_auc": 0.9177,
+        "pr_auc": 0.9791,
+        "type_f1": 0.4889,
+        "seed": 42,
+        "elapsed_s": 10.5
+      },
+      {
+        "threshold": 0.02,
+        "bin_f1": 0.9704,
+        "roc_auc": 0.9261,
+        "pr_auc": 0.9909,
+        "type_f1": 0.5204,
+        "seed": 123,
+        "elapsed_s": 8.0
+      },
+      {
+        "threshold": 0.01,
+        "bin_f1": 0.9706,
+        "roc_auc": 0.9293,
+        "pr_auc": 0.9866,
+        "type_f1": 0.4995,
+        "seed": 7,
+        "elapsed_s": 9.3
+      },
+      {
+        "threshold": 0.01,
+        "bin_f1": 0.9648,
+        "roc_auc": 0.9825,
+        "pr_auc": 0.9985,
+        "type_f1": 0.4464,
+        "seed": 99,
+        "elapsed_s": 7.7
+      },
+      {
+        "threshold": 0.01,
+        "bin_f1": 0.9639,
+        "roc_auc": 0.9196,
+        "pr_auc": 0.9781,
+        "type_f1": 0.4766,
+        "seed": 2024,
+        "elapsed_s": 8.6
+      }
+    ]
+  },
+  {
+    "round": 3,
+    "label": "LOGO (banking)",
+    "change": "Round 2 model. Train on all suites except 'banking', test on 'banking' only.",
+    "n_seeds": 5,
+    "bin_f1_mean": 0.4519,
+    "bin_f1_std": 0.1172,
+    "roc_auc_mean": 0.5391,
+    "roc_auc_std": 0.0286,
+    "pr_auc_mean": 0.5211,
+    "pr_auc_std": 0.0197,
+    "type_f1_mean": 0.4322,
+    "type_f1_std": 0.0152,
+    "threshold_mean": 0.184,
+    "per_seed": [
+      {
+        "threshold": 0.44,
+        "bin_f1": 0.32,
+        "roc_auc": 0.543,
+        "pr_auc": 0.5292,
+        "type_f1": 0.4286,
+        "seed": 42,
+        "elapsed_s": 14.6
+      },
+      {
+        "threshold": 0.04,
+        "bin_f1": 0.4,
+        "roc_auc": 0.5742,
+        "pr_auc": 0.5474,
+        "type_f1": 0.4483,
+        "seed": 123,
+        "elapsed_s": 12.3
+      },
+      {
+        "threshold": 0.01,
+        "bin_f1": 0.6111,
+        "roc_auc": 0.4883,
+        "pr_auc": 0.4871,
+        "type_f1": 0.4483,
+        "seed": 7,
+        "elapsed_s": 13.0
+      },
+      {
+        "threshold": 0.01,
+        "bin_f1": 0.5714,
+        "roc_auc": 0.5547,
+        "pr_auc": 0.5168,
+        "type_f1": 0.4286,
+        "seed": 99,
+        "elapsed_s": 13.3
+      },
+      {
+        "threshold": 0.42,
+        "bin_f1": 0.3571,
+        "roc_auc": 0.5352,
+        "pr_auc": 0.5252,
+        "type_f1": 0.4074,
+        "seed": 2024,
+        "elapsed_s": 13.7
+      }
+    ]
+  },
+  {
+    "round": 4,
+    "label": "Unfreeze Encoder (last 2 layers)",
+    "change": "Round 2 settings + fine-tune last 2 SentenceTransformer layers.",
+    "n_seeds": 5,
+    "bin_f1_mean": 0.9617,
+    "bin_f1_std": 0.0144,
+    "roc_auc_mean": 0.9489,
+    "roc_auc_std": 0.0289,
+    "pr_auc_mean": 0.9941,
+    "pr_auc_std": 0.0045,
+    "type_f1_mean": 0.429,
+    "type_f1_std": 0.0994,
+    "threshold_mean": 0.01,
+    "per_seed": [
+      {
+        "threshold": 0.01,
+        "bin_f1": 0.9682,
+        "roc_auc": 0.9132,
+        "pr_auc": 0.9864,
+        "type_f1": 0.3964,
+        "seed": 42,
+        "elapsed_s": 388.8
+      },
+      {
+        "threshold": 0.01,
+        "bin_f1": 0.9507,
+        "roc_auc": 0.9229,
+        "pr_auc": 0.9921,
+        "type_f1": 0.2663,
+        "seed": 123,
+        "elapsed_s": 399.5
+      },
+      {
+        "threshold": 0.01,
+        "bin_f1": 0.9394,
+        "roc_auc": 0.9466,
+        "pr_auc": 0.9952,
+        "type_f1": 0.4158,
+        "seed": 7,
+        "elapsed_s": 392.1
+      },
+      {
+        "threshold": 0.01,
+        "bin_f1": 0.9726,
+        "roc_auc": 0.9903,
+        "pr_auc": 0.9992,
+        "type_f1": 0.5288,
+        "seed": 99,
+        "elapsed_s": 392.7
+      },
+      {
+        "threshold": 0.01,
+        "bin_f1": 0.9778,
+        "roc_auc": 0.9714,
+        "pr_auc": 0.9976,
+        "type_f1": 0.5375,
+        "seed": 2024,
+        "elapsed_s": 392.2
+      }
+    ]
+  }
+]

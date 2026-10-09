@@ -1,0 +1,124 @@
+2026-07-12 22:14:17,947 [INFO] Training on: cuda
+2026-07-12 22:14:17,948 [INFO] GPU: NVIDIA GeForce RTX 4060 Laptop GPU
+2026-07-12 22:14:17,975 [INFO] Loaded AgentDojo runs:   250 rows from dataset/agentdojo_banking_only_runs.csv
+2026-07-12 22:14:17,975 [INFO] Loaded AgentDojo events: 750 rows from dataset/agentdojo_banking_only_events.csv
+2026-07-12 22:14:17,992 [INFO] Valid runs (3 hops each): 250
+2026-07-12 22:14:18,331 [INFO] 
+============================================================
+2026-07-12 22:14:18,331 [INFO]   AGENTDOJO DATASET SUMMARY
+2026-07-12 22:14:18,331 [INFO] ============================================================
+2026-07-12 22:14:18,331 [INFO]   Total samples: 250
+2026-07-12 22:14:18,332 [INFO]   Attacks:       96
+2026-07-12 22:14:18,332 [INFO]   Clean:         154
+2026-07-12 22:14:18,332 [INFO]   Text pairs:    750
+2026-07-12 22:14:18,332 [INFO] 
+  Attack type breakdown:
+2026-07-12 22:14:18,332 [INFO]     direct_injection         : 21
+2026-07-12 22:14:18,332 [INFO]     dos                      : 46
+2026-07-12 22:14:18,332 [INFO]     indirect_injection       : 29
+2026-07-12 22:14:18,332 [INFO] 
+  Outcome breakdown:
+2026-07-12 22:14:18,332 [INFO]     clean                    : 107
+2026-07-12 22:14:18,332 [INFO]     full_success             : 25
+2026-07-12 22:14:18,333 [INFO]     ignored                  : 92
+2026-07-12 22:14:18,333 [INFO]     partial                  : 26
+2026-07-12 22:14:18,333 [INFO] ============================================================
+
+2026-07-12 22:14:18,333 [INFO] Loading cached embeddings from models/agentdojo/text_embeddings.npy
+2026-07-12 22:14:18,340 [INFO] Cache size mismatch (found 876, expected 750). Recomputing...
+2026-07-12 22:14:18,340 [INFO] Embedding 750 texts with all-MiniLM-L6-v2...
+2026-07-12 22:14:19,022 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-12 22:14:19,023 [WARNING] Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-12 22:14:19,115 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/modules.json "HTTP/1.1 200 OK"
+2026-07-12 22:14:19,436 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-12 22:14:19,527 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config_sentence_transformers.json "HTTP/1.1 200 OK"
+2026-07-12 22:14:19,529 [INFO] Loading SentenceTransformer model from sentence-transformers/all-MiniLM-L6-v2.
+2026-07-12 22:14:19,842 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-12 22:14:19,935 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config_sentence_transformers.json "HTTP/1.1 200 OK"
+2026-07-12 22:14:20,259 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-07-12 22:14:20,352 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/README.md "HTTP/1.1 200 OK"
+2026-07-12 22:14:20,668 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-12 22:14:20,759 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/modules.json "HTTP/1.1 200 OK"
+2026-07-12 22:14:21,076 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-12 22:14:21,171 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/sentence_bert_config.json "HTTP/1.1 200 OK"
+2026-07-12 22:14:21,506 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json "HTTP/1.1 404 Not Found"
+2026-07-12 22:14:21,830 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-12 22:14:21,924 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config.json "HTTP/1.1 200 OK"
+2026-07-12 22:14:22,443 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-07-12 22:14:22,771 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-07-12 22:14:23,087 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/video_preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-07-12 22:14:23,408 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-07-12 22:14:23,734 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-12 22:14:23,827 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-07-12 22:14:24,157 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-12 22:14:24,247 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config.json "HTTP/1.1 200 OK"
+2026-07-12 22:14:24,568 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-12 22:14:24,657 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config.json "HTTP/1.1 200 OK"
+2026-07-12 22:14:24,998 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-12 22:14:25,089 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-07-12 22:14:25,428 [INFO] HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-07-12 22:14:25,755 [INFO] HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-07-12 22:14:26,222 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/1_Pooling/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-12 22:14:26,315 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/1_Pooling%2Fconfig.json "HTTP/1.1 200 OK"
+2026-07-12 22:14:26,638 [INFO] HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2 "HTTP/1.1 200 OK"
+2026-07-12 22:14:28,765 [INFO] Cached embeddings to models/agentdojo/text_embeddings.npy
+2026-07-12 22:14:28,768 [INFO] Split: 170 train / 30 val / 50 test
+2026-07-12 22:14:28,823 [INFO] Model parameters: 3,227,020
+2026-07-12 22:14:39,107 [INFO] Epoch 005 | loss=3.3798 | bin_f1=0.235 | out_f1=0.016 | type_f1=0.154 | composite=0.135
+2026-07-12 22:14:39,107 [INFO]           | sigmas: bin=0.997, out=1.002, type=1.002
+2026-07-12 22:14:39,144 [INFO]   ✅ New best model saved (composite F1=0.135)
+2026-07-12 22:14:40,421 [INFO] Epoch 010 | loss=2.5913 | bin_f1=0.235 | out_f1=0.054 | type_f1=0.262 | composite=0.184
+2026-07-12 22:14:40,421 [INFO]           | sigmas: bin=0.992, out=1.005, type=1.004
+2026-07-12 22:14:40,445 [INFO]   ✅ New best model saved (composite F1=0.184)
+2026-07-12 22:14:41,840 [INFO] Epoch 015 | loss=2.3640 | bin_f1=0.235 | out_f1=0.048 | type_f1=0.422 | composite=0.235
+2026-07-12 22:14:41,840 [INFO]           | sigmas: bin=0.988, out=1.007, type=1.004
+2026-07-12 22:14:41,867 [INFO]   ✅ New best model saved (composite F1=0.235)
+2026-07-12 22:14:43,204 [INFO] Epoch 020 | loss=2.3101 | bin_f1=0.235 | out_f1=0.054 | type_f1=0.243 | composite=0.177
+2026-07-12 22:14:43,205 [INFO]           | sigmas: bin=0.984, out=1.008, type=1.002
+2026-07-12 22:14:44,676 [INFO] Epoch 025 | loss=2.0099 | bin_f1=0.242 | out_f1=0.112 | type_f1=0.422 | composite=0.259
+2026-07-12 22:14:44,676 [INFO]           | sigmas: bin=0.982, out=1.008, type=1.001
+2026-07-12 22:14:44,733 [INFO]   ✅ New best model saved (composite F1=0.259)
+2026-07-12 22:14:46,147 [INFO] Epoch 030 | loss=1.7503 | bin_f1=0.242 | out_f1=0.128 | type_f1=0.600 | composite=0.323
+2026-07-12 22:14:46,147 [INFO]           | sigmas: bin=0.981, out=1.008, type=1.000
+2026-07-12 22:14:46,172 [INFO]   ✅ New best model saved (composite F1=0.323)
+2026-07-12 22:14:47,616 [INFO] Epoch 035 | loss=1.5877 | bin_f1=0.250 | out_f1=0.149 | type_f1=0.509 | composite=0.303
+2026-07-12 22:14:47,616 [INFO]           | sigmas: bin=0.980, out=1.008, type=0.999
+2026-07-12 22:14:49,156 [INFO] Epoch 040 | loss=1.9054 | bin_f1=0.250 | out_f1=0.149 | type_f1=0.509 | composite=0.303
+2026-07-12 22:14:49,156 [INFO]           | sigmas: bin=0.980, out=1.008, type=0.999
+2026-07-12 22:14:49,157 [INFO] 
+==================================================
+2026-07-12 22:14:49,157 [INFO] FINAL TEST EVALUATION (AgentDojo-Only Model)
+2026-07-12 22:14:49,157 [INFO] ==================================================
+2026-07-12 22:14:49,337 [INFO] Binary F1:       0.3448
+2026-07-12 22:14:49,337 [INFO] Binary ROC-AUC:  0.7175
+2026-07-12 22:14:49,337 [INFO] Outcome Macro F1:0.1037
+2026-07-12 22:14:49,337 [INFO] Type Macro F1:   0.6290
+2026-07-12 22:14:49,337 [INFO] 
+Outcome Report:
+              precision    recall  f1-score   support
+
+       clean       0.00      0.00      0.00        26
+     ignored       0.00      0.00      0.00        14
+     partial       0.08      0.40      0.13         5
+full_success       0.17      0.80      0.29         5
+
+    accuracy                           0.12        50
+   macro avg       0.06      0.30      0.10        50
+weighted avg       0.03      0.12      0.04        50
+
+2026-07-12 22:14:49,337 [INFO] 
+Type Report:
+                    precision    recall  f1-score   support
+
+  direct_injection       0.57      1.00      0.73         4
+indirect_injection       0.44      0.80      0.57         5
+  memory_poisoning       0.00      0.00      0.00         0
+       tool_misuse       0.00      0.00      0.00         0
+               dos       1.00      0.42      0.59        12
+
+          accuracy                           0.62        21
+         macro avg       0.40      0.44      0.38        21
+      weighted avg       0.79      0.62      0.61        21
+
+2026-07-12 22:14:49,338 [INFO] 
+Results saved to models/agentdojo/results.json

@@ -1,0 +1,170 @@
+2026-08-02 11:11:37,831 [INFO] Loading AgentDojo samples...
+2026-08-02 11:11:37,853 [INFO] Loaded AgentDojo runs:   1087 rows from dataset/agentdojo_local_runs.csv
+2026-08-02 11:11:37,853 [INFO] Loaded AgentDojo events: 3261 rows from dataset/agentdojo_local_events.csv
+2026-08-02 11:11:37,864 [INFO] Valid runs (3 hops each): 1087
+2026-08-02 11:11:38,784 [INFO] 
+============================================================
+2026-08-02 11:11:38,784 [INFO]   AGENTDOJO DATASET SUMMARY
+2026-08-02 11:11:38,784 [INFO] ============================================================
+2026-08-02 11:11:38,784 [INFO]   Total samples: 1087
+2026-08-02 11:11:38,784 [INFO]   Attacks:       995
+2026-08-02 11:11:38,784 [INFO]   Clean:         92
+2026-08-02 11:11:38,784 [INFO]   Text pairs:    3261
+2026-08-02 11:11:38,785 [INFO] 
+  Attack type breakdown:
+2026-08-02 11:11:38,785 [INFO]     direct_injection         : 264
+2026-08-02 11:11:38,785 [INFO]     dos                      : 90
+2026-08-02 11:11:38,785 [INFO]     indirect_injection       : 641
+2026-08-02 11:11:38,785 [INFO] 
+  Outcome breakdown:
+2026-08-02 11:11:38,785 [INFO]     clean                    : 147
+2026-08-02 11:11:38,785 [INFO]     full_success             : 31
+2026-08-02 11:11:38,785 [INFO]     ignored                  : 25
+2026-08-02 11:11:38,785 [INFO]     partial                  : 884
+2026-08-02 11:11:38,785 [INFO] ============================================================
+
+2026-08-02 11:11:38,912 [INFO] Embedding texts (cached after first run)...
+2026-08-02 11:11:38,912 [INFO] Loading cached embeddings from models/agentdojo/text_embeddings.npy
+2026-08-02 11:11:38,913 [INFO] 
+============================================================
+2026-08-02 11:11:38,913 [INFO] DATASET SNAPSHOT
+2026-08-02 11:11:38,913 [INFO] ============================================================
+2026-08-02 11:11:38,913 [INFO]   Total samples:      1087
+2026-08-02 11:11:38,913 [INFO]   Unique run_ids:     1087
+2026-08-02 11:11:38,913 [INFO]   Unique scenario_ids:105
+2026-08-02 11:11:38,913 [INFO]   Attacks:            995 (91.5%)
+2026-08-02 11:11:38,913 [INFO]   Clean:              92 (8.5%)
+2026-08-02 11:11:38,915 [INFO]   Suites:             {'workspace': np.int64(986), 'travel': np.int64(40), 'banking': np.int64(32), 'slack': np.int64(29)}
+2026-08-02 11:11:38,915 [INFO] ============================================================
+
+2026-08-02 11:11:38,915 [INFO] 
+============================================================
+2026-08-02 11:11:38,915 [INFO] ROUND 1: True Baseline
+2026-08-02 11:11:38,915 [INFO] Change: scenario_id grouping (fixed). No other changes.
+2026-08-02 11:11:38,915 [INFO] ============================================================
+2026-08-02 11:11:38,915 [INFO]   Seed 42...
+2026-08-02 11:11:45,894 [INFO]     bin_f1=0.9581 roc_auc=0.9167 pr_auc=0.9803 type_f1=0.4463 thresh=0.01
+2026-08-02 11:11:45,894 [INFO]   Seed 123...
+2026-08-02 11:11:52,015 [INFO]     bin_f1=0.9604 roc_auc=0.9196 pr_auc=0.9913 type_f1=0.2663 thresh=0.24
+2026-08-02 11:11:52,015 [INFO]   Seed 7...
+2026-08-02 11:11:58,206 [INFO]     bin_f1=0.9691 roc_auc=0.9233 pr_auc=0.9750 type_f1=0.4846 thresh=0.01
+2026-08-02 11:11:58,206 [INFO]   Seed 99...
+2026-08-02 11:12:04,448 [INFO]     bin_f1=0.9581 roc_auc=0.9628 pr_auc=0.9967 type_f1=0.2651 thresh=0.01
+2026-08-02 11:12:04,448 [INFO]   Seed 2024...
+2026-08-02 11:12:12,996 [INFO]     bin_f1=0.9621 roc_auc=0.9257 pr_auc=0.9771 type_f1=0.5018 thresh=0.04
+2026-08-02 11:12:12,996 [INFO] 
+  ── Round 1 Summary ──
+2026-08-02 11:12:12,996 [INFO]   Bin F1:   0.9616 ± 0.0041
+2026-08-02 11:12:12,996 [INFO]   ROC-AUC:  0.9296 ± 0.0169
+2026-08-02 11:12:12,997 [INFO]   PR-AUC:   0.9841 ± 0.0084
+2026-08-02 11:12:12,997 [INFO]   Type F1:  0.3928 ± 0.1053
+2026-08-02 11:12:12,997 [INFO]   Mean Threshold: 0.06  (threshold=0.01 → model predicts everything as attack)
+2026-08-02 11:12:12,997 [INFO] 
+============================================================
+2026-08-02 11:12:12,997 [INFO] ROUND 2: Balanced Loss
+2026-08-02 11:12:12,997 [INFO] Change: Round 1 + inverse-freq CrossEntropyLoss weight on binary head.
+2026-08-02 11:12:12,997 [INFO] ============================================================
+2026-08-02 11:12:12,997 [INFO]   Seed 42...
+2026-08-02 11:12:23,545 [INFO]     bin_f1=0.9612 roc_auc=0.9177 pr_auc=0.9791 type_f1=0.4889 thresh=0.01
+2026-08-02 11:12:23,545 [INFO]   Seed 123...
+2026-08-02 11:12:31,541 [INFO]     bin_f1=0.9704 roc_auc=0.9261 pr_auc=0.9909 type_f1=0.5204 thresh=0.02
+2026-08-02 11:12:31,541 [INFO]   Seed 7...
+2026-08-02 11:12:40,815 [INFO]     bin_f1=0.9706 roc_auc=0.9293 pr_auc=0.9866 type_f1=0.4995 thresh=0.01
+2026-08-02 11:12:40,815 [INFO]   Seed 99...
+2026-08-02 11:12:48,522 [INFO]     bin_f1=0.9648 roc_auc=0.9825 pr_auc=0.9985 type_f1=0.4464 thresh=0.01
+2026-08-02 11:12:48,522 [INFO]   Seed 2024...
+2026-08-02 11:12:57,144 [INFO]     bin_f1=0.9639 roc_auc=0.9196 pr_auc=0.9781 type_f1=0.4766 thresh=0.01
+2026-08-02 11:12:57,144 [INFO] 
+  ── Round 2 Summary ──
+2026-08-02 11:12:57,144 [INFO]   Bin F1:   0.9662 ± 0.0037
+2026-08-02 11:12:57,144 [INFO]   ROC-AUC:  0.9350 ± 0.0241
+2026-08-02 11:12:57,144 [INFO]   PR-AUC:   0.9866 ± 0.0076
+2026-08-02 11:12:57,144 [INFO]   Type F1:  0.4864 ± 0.0246
+2026-08-02 11:12:57,144 [INFO]   Mean Threshold: 0.01  (threshold=0.01 → model predicts everything as attack)
+2026-08-02 11:12:57,144 [INFO] 
+============================================================
+2026-08-02 11:12:57,144 [INFO] ROUND 3: LOGO (banking)
+2026-08-02 11:12:57,144 [INFO] Change: Round 2 model. Train on all suites except 'banking', test on 'banking' only.
+2026-08-02 11:12:57,144 [INFO] ============================================================
+2026-08-02 11:12:57,144 [INFO]   Seed 42...
+2026-08-02 11:13:11,719 [INFO]     bin_f1=0.3200 roc_auc=0.5430 pr_auc=0.5292 type_f1=0.4286 thresh=0.44
+2026-08-02 11:13:11,719 [INFO]   Seed 123...
+2026-08-02 11:13:24,026 [INFO]     bin_f1=0.4000 roc_auc=0.5742 pr_auc=0.5474 type_f1=0.4483 thresh=0.04
+2026-08-02 11:13:24,026 [INFO]   Seed 7...
+2026-08-02 11:13:37,070 [INFO]     bin_f1=0.6111 roc_auc=0.4883 pr_auc=0.4871 type_f1=0.4483 thresh=0.01
+2026-08-02 11:13:37,070 [INFO]   Seed 99...
+2026-08-02 11:13:50,394 [INFO]     bin_f1=0.5714 roc_auc=0.5547 pr_auc=0.5168 type_f1=0.4286 thresh=0.01
+2026-08-02 11:13:50,394 [INFO]   Seed 2024...
+2026-08-02 11:14:04,078 [INFO]     bin_f1=0.3571 roc_auc=0.5352 pr_auc=0.5252 type_f1=0.4074 thresh=0.42
+2026-08-02 11:14:04,079 [INFO] 
+  ── Round 3 Summary ──
+2026-08-02 11:14:04,079 [INFO]   Bin F1:   0.4519 ± 0.1172
+2026-08-02 11:14:04,079 [INFO]   ROC-AUC:  0.5391 ± 0.0286
+2026-08-02 11:14:04,079 [INFO]   PR-AUC:   0.5211 ± 0.0197
+2026-08-02 11:14:04,079 [INFO]   Type F1:  0.4322 ± 0.0152
+2026-08-02 11:14:04,079 [INFO]   Mean Threshold: 0.18  (threshold=0.01 → model predicts everything as attack)
+2026-08-02 11:14:05,324 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-02 11:14:05,608 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/modules.json "HTTP/1.1 200 OK"
+2026-08-02 11:14:06,109 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-02 11:14:06,110 [WARNING] Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-08-02 11:14:06,392 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config_sentence_transformers.json "HTTP/1.1 200 OK"
+2026-08-02 11:14:06,394 [INFO] Loading SentenceTransformer model from sentence-transformers/all-MiniLM-L6-v2.
+2026-08-02 11:14:06,893 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-02 11:14:07,182 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config_sentence_transformers.json "HTTP/1.1 200 OK"
+2026-08-02 11:14:07,681 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-08-02 11:14:07,965 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/README.md "HTTP/1.1 200 OK"
+2026-08-02 11:14:08,489 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-02 11:14:08,777 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/modules.json "HTTP/1.1 200 OK"
+2026-08-02 11:14:09,283 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-02 11:14:09,567 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/sentence_bert_config.json "HTTP/1.1 200 OK"
+2026-08-02 11:14:10,113 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json "HTTP/1.1 404 Not Found"
+2026-08-02 11:14:10,611 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-02 11:14:10,913 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config.json "HTTP/1.1 200 OK"
+2026-08-02 11:14:11,616 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-08-02 11:14:12,116 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-08-02 11:14:12,627 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/video_preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-08-02 11:14:13,128 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-08-02 11:14:13,626 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-02 11:14:13,910 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-08-02 11:14:14,409 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-02 11:14:14,698 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config.json "HTTP/1.1 200 OK"
+2026-08-02 11:14:15,218 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-02 11:14:15,502 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config.json "HTTP/1.1 200 OK"
+2026-08-02 11:14:16,003 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-02 11:14:16,287 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-08-02 11:14:16,792 [INFO] HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-08-02 11:14:17,297 [INFO] HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-08-02 11:14:17,964 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/1_Pooling/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-08-02 11:14:18,262 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/1_Pooling%2Fconfig.json "HTTP/1.1 200 OK"
+2026-08-02 11:14:18,770 [INFO] HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2 "HTTP/1.1 200 OK"
+2026-08-02 11:14:18,958 [INFO] 
+============================================================
+2026-08-02 11:14:18,959 [INFO] ROUND 4: Unfreeze Encoder (last 2 layers)
+2026-08-02 11:14:18,959 [INFO] Change: Round 2 settings + fine-tune last 2 SentenceTransformer layers.
+2026-08-02 11:14:18,959 [INFO] ============================================================
+2026-08-02 11:14:18,959 [INFO]   Seed 42...
+2026-08-02 11:14:19,064 [INFO] Seed 42: unfroze last 2 ST encoder layers
+2026-08-02 11:14:19,067 [WARNING] The `tokenize` method is deprecated, please use `preprocess` instead.
+2026-08-02 11:20:47,719 [INFO]     bin_f1=0.9682 roc_auc=0.9132 pr_auc=0.9864 type_f1=0.3964 thresh=0.01
+2026-08-02 11:20:47,720 [INFO]   Seed 123...
+2026-08-02 11:20:47,812 [INFO] Seed 123: unfroze last 2 ST encoder layers
+2026-08-02 11:27:27,208 [INFO]     bin_f1=0.9507 roc_auc=0.9229 pr_auc=0.9921 type_f1=0.2663 thresh=0.01
+2026-08-02 11:27:27,208 [INFO]   Seed 7...
+2026-08-02 11:27:27,306 [INFO] Seed 7: unfroze last 2 ST encoder layers
+2026-08-02 11:33:59,291 [INFO]     bin_f1=0.9394 roc_auc=0.9466 pr_auc=0.9952 type_f1=0.4158 thresh=0.01
+2026-08-02 11:33:59,291 [INFO]   Seed 99...
+2026-08-02 11:33:59,350 [INFO] Seed 99: unfroze last 2 ST encoder layers
+2026-08-02 11:40:31,955 [INFO]     bin_f1=0.9726 roc_auc=0.9903 pr_auc=0.9992 type_f1=0.5288 thresh=0.01
+2026-08-02 11:40:31,955 [INFO]   Seed 2024...
+2026-08-02 11:40:32,017 [INFO] Seed 2024: unfroze last 2 ST encoder layers
+2026-08-02 11:47:04,153 [INFO]     bin_f1=0.9778 roc_auc=0.9714 pr_auc=0.9976 type_f1=0.5375 thresh=0.01
+2026-08-02 11:47:04,154 [INFO] 
+  ── Round 4 Summary ──
+2026-08-02 11:47:04,154 [INFO]   Bin F1:   0.9617 ± 0.0144
+2026-08-02 11:47:04,154 [INFO]   ROC-AUC:  0.9489 ± 0.0289
+2026-08-02 11:47:04,154 [INFO]   PR-AUC:   0.9941 ± 0.0045
+2026-08-02 11:47:04,154 [INFO]   Type F1:  0.4290 ± 0.0994
+2026-08-02 11:47:04,154 [INFO]   Mean Threshold: 0.01  (threshold=0.01 → model predicts everything as attack)
+2026-08-02 11:47:04,155 [INFO] 
+Results saved to dataset/ablation_results.json
+2026-08-02 11:47:04,155 [INFO] Markdown report saved to dataset/ablation_results.md

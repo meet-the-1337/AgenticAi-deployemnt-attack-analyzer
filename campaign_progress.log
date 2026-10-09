@@ -1,0 +1,189 @@
+Starting FULL workspace campaign...
+==================================================
+ ReconMind x AgentDojo Training Campaign
+ Model: GROQ_LLAMA_3_3 
+ Log directory: data/agentdojo_runs
+==================================================
+
+[1/5] Clean runs (no attack)...
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ms/all projects/AGENTIC-AI + ML/reconmind/.venv/lib/python3.14/site-packages/openai/_base_client.py", line 1105, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kjs8h2f1e5mtw6rvqzhncgz3` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98605, Requested 3640. Please try again in 32m19.68s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+Extracting...
+2026-07-11 15:58:11,627 [INFO] Found 2 JSON log files in data/agentdojo_runs
+2026-07-11 15:58:11,628 [INFO] Loaded 2 task results
+2026-07-11 15:58:11,628 [INFO] Extracted: 2 runs, 6 events. Skipped: 0
+2026-07-11 15:58:11,640 [INFO] Saved: dataset/agentdojo_full_runs.csv (2 rows)
+2026-07-11 15:58:11,640 [INFO] Saved: dataset/agentdojo_full_events.csv (6 rows)
+
+=== Label Distribution ===
+injection_type:
+injection_type
+    2
+
+injection_outcome:
+injection_outcome
+clean    2
+
+attack_success_binary:
+attack_success_binary
+0    2
+
+defense_config:
+defense_config
+none    2
+
+Merging...
+2026-07-11 15:58:12,259 [INFO] Loaded Existing runs: 533 rows, 24 columns — dataset/dataset_runs.csv
+2026-07-11 15:58:12,283 [INFO] Loaded Existing events: 1599 rows, 21 columns — dataset/dataset_events.csv
+2026-07-11 15:58:12,286 [INFO] Loaded AgentDojo runs: 2 rows, 14 columns — dataset/agentdojo_full_runs.csv
+2026-07-11 15:58:12,288 [INFO] Loaded AgentDojo events: 6 rows, 13 columns — dataset/agentdojo_full_events.csv
+2026-07-11 15:58:12,388 [INFO] Merge complete.
+
+============================================================
+  MERGED DATASET — Runs
+============================================================
+  Total rows: 535
+
+  injection_type:
+                                     170  (31.8%)
+    indirect_injection                90  (16.8%)
+    memory_poisoning                  90  (16.8%)
+    tool_misuse                       90  (16.8%)
+    direct_injection                  90  (16.8%)
+    direct_prompt_injection            5  ( 0.9%)
+
+  injection_outcome:
+    full_success                     187  (35.0%)
+    clean                            186  (34.8%)
+    partial                          162  (30.3%)
+
+  attack_success_binary:
+    1                                349  (65.2%)
+    0                                186  (34.8%)
+
+  defense_config:
+    none                             261  (48.8%)
+    heuristic                        251  (46.9%)
+                                      23  ( 4.3%)
+
+============================================================
+  OUTPUT FILES
+============================================================
+  Runs:   dataset/merged/dataset_runs.csv   (535 rows)
+  Events: dataset/merged/dataset_events.csv (1605 rows)
+
+  To retrain:
+  .venv/bin/python analytics/train_model.py \
+    --dataset-dir dataset/merged \
+    --epochs 80 --no-cache
+
+Training...
+Embedding cache cleared.
+
+Training ReconMind deep model
+  Dataset: dataset/merged
+  Output:  models/deep
+  Epochs:  20
+  Device:  cuda (RTX 4060)
+
+2026-07-11 15:58:20,200 [INFO] Training on: cuda
+2026-07-11 15:58:20,201 [INFO] GPU: NVIDIA GeForce RTX 4060 Laptop GPU
+2026-07-11 15:58:21,336 [INFO] Loaded 535 samples, 1605 text pairs
+2026-07-11 15:58:21,336 [INFO] Embedding 1605 texts with all-MiniLM-L6-v2...
+2026-07-11 15:58:22,024 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-11 15:58:22,115 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/modules.json "HTTP/1.1 200 OK"
+2026-07-11 15:58:22,439 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-11 15:58:22,439 [WARNING] Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-07-11 15:58:22,532 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config_sentence_transformers.json "HTTP/1.1 200 OK"
+2026-07-11 15:58:22,533 [INFO] Loading SentenceTransformer model from sentence-transformers/all-MiniLM-L6-v2.
+2026-07-11 15:58:22,851 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-11 15:58:22,943 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config_sentence_transformers.json "HTTP/1.1 200 OK"
+2026-07-11 15:58:23,268 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-07-11 15:58:23,357 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/README.md "HTTP/1.1 200 OK"
+2026-07-11 15:58:23,680 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-11 15:58:23,769 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/modules.json "HTTP/1.1 200 OK"
+2026-07-11 15:58:24,090 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-11 15:58:24,182 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/sentence_bert_config.json "HTTP/1.1 200 OK"
+2026-07-11 15:58:24,507 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json "HTTP/1.1 404 Not Found"
+2026-07-11 15:58:24,834 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-11 15:58:24,926 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config.json "HTTP/1.1 200 OK"
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 9198.82it/s]
+2026-07-11 15:58:25,394 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-07-11 15:58:25,722 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-07-11 15:58:26,038 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/video_preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-07-11 15:58:26,356 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-07-11 15:58:26,678 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-11 15:58:26,769 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-07-11 15:58:27,100 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-11 15:58:27,190 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config.json "HTTP/1.1 200 OK"
+2026-07-11 15:58:27,506 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-11 15:58:27,597 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config.json "HTTP/1.1 200 OK"
+2026-07-11 15:58:27,912 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-11 15:58:28,001 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-07-11 15:58:28,318 [INFO] HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-07-11 15:58:28,632 [INFO] HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-07-11 15:58:29,099 [INFO] HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/1_Pooling/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-07-11 15:58:29,190 [INFO] HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/1_Pooling%2Fconfig.json "HTTP/1.1 200 OK"
+2026-07-11 15:58:29,504 [INFO] HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2 "HTTP/1.1 200 OK"
+Batches:   0%|          | 0/7 [00:00<?, ?it/s]Batches:  14%|█▍        | 1/7 [00:00<00:04,  1.36it/s]Batches:  29%|██▊       | 2/7 [00:00<00:01,  2.57it/s]Batches:  43%|████▎     | 3/7 [00:01<00:01,  3.69it/s]Batches:  71%|███████▏  | 5/7 [00:01<00:00,  6.03it/s]Batches: 100%|██████████| 7/7 [00:01<00:00,  8.45it/s]Batches: 100%|██████████| 7/7 [00:01<00:00,  5.37it/s]
+2026-07-11 15:58:31,050 [INFO] Cached embeddings to models/deep/text_embeddings.npy
+2026-07-11 15:58:31,053 [INFO] Split: 363 train / 65 val / 107 test
+2026-07-11 15:58:31,106 [INFO] Model parameters: 3,226,763
+2026-07-11 15:58:38,746 [INFO] Epoch 005 | loss=2.4198 | bin_f1=0.979 | out_f1=0.568 | type_f1=0.121 | composite=0.556
+2026-07-11 15:58:38,781 [INFO]   ✅ New best model saved (composite F1=0.556)
+2026-07-11 15:58:40,381 [INFO] Epoch 010 | loss=1.8742 | bin_f1=0.978 | out_f1=0.642 | type_f1=0.169 | composite=0.596
+2026-07-11 15:58:40,417 [INFO]   ✅ New best model saved (composite F1=0.596)
+2026-07-11 15:58:41,832 [INFO] Epoch 015 | loss=1.7273 | bin_f1=0.978 | out_f1=0.671 | type_f1=0.177 | composite=0.609
+2026-07-11 15:58:41,855 [INFO]   ✅ New best model saved (composite F1=0.609)
+2026-07-11 15:58:43,351 [INFO] Epoch 020 | loss=1.7300 | bin_f1=0.978 | out_f1=0.685 | type_f1=0.220 | composite=0.628
+2026-07-11 15:58:43,375 [INFO]   ✅ New best model saved (composite F1=0.628)
+2026-07-11 15:58:43,375 [INFO] 
+==================================================
+2026-07-11 15:58:43,375 [INFO] FINAL TEST EVALUATION
+2026-07-11 15:58:43,375 [INFO] ==================================================
+2026-07-11 15:58:43,523 [INFO] Binary F1:       0.9531
+2026-07-11 15:58:43,523 [INFO] Binary ROC-AUC:  0.9963
+2026-07-11 15:58:43,523 [INFO] Outcome Macro F1:0.6682
+2026-07-11 15:58:43,523 [INFO] Type Macro F1:   0.2388
+2026-07-11 15:58:43,523 [INFO] 
+Outcome Report:
+              precision    recall  f1-score   support
+
+       clean       0.87      1.00      0.93        40
+     ignored       0.00      0.00      0.00         0
+     partial       0.75      0.26      0.38        35
+full_success       0.57      0.88      0.69        32
+
+    accuracy                           0.72       107
+   macro avg       0.55      0.53      0.50       107
+weighted avg       0.74      0.72      0.68       107
+
+2026-07-11 15:58:43,523 [INFO] 
+Type Report:
+                    precision    recall  f1-score   support
+
+  direct_injection       0.27      0.18      0.22        22
+indirect_injection       0.00      0.00      0.00        18
+  memory_poisoning       0.38      0.84      0.52        19
+       tool_misuse       0.20      0.23      0.21        13
+
+          accuracy                           0.32        72
+         macro avg       0.21      0.31      0.24        72
+      weighted avg       0.22      0.32      0.24        72
+
+2026-07-11 15:58:43,524 [INFO] 
+Results saved to models/deep/results.json
+
+==================================================
+TRAINING COMPLETE
+==================================================
+Binary Detection F1:    0.9531
+Binary ROC-AUC:         0.9963
+Outcome Classification: 0.6682
+Type Classification:    0.2388
+
+Model saved to: models/deep/best_model.pt
